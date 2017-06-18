@@ -8,5 +8,6 @@ It starts off with features enumerated below, and will later be expanded with fe
 - watch directories for new images
 - tagging
 - image metadata
-- drag images from web into memebox
+- search through all tags and metadata, configure whether to remove metadata when doing so
+- drag and drop from/to browser
 
