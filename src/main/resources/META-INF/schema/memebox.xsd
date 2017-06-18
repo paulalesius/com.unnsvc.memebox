@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:memebox" xmlns:tns="urn:memebox" elementFormDefault="qualified">
+
+	<xs:complexType name="storageType">
+		<xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="location" type="xs:string" />
+	</xs:complexType>
+
+	<xs:element name="memebox">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="storage" type="tns:storageType" minOccurs="1" maxOccurs="1" />
+				<xs:element name="watch" type="tns:storageType" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
