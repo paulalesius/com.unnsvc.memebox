@@ -1,5 +1,5 @@
 
-package com.unnsvc.labs.memebox.preferences;
+package com.unnsvc.memebox.preferences;
 
 import java.io.File;
 import java.util.ArrayList;

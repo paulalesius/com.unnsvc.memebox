@@ -1,5 +1,5 @@
 
-package com.unnsvc.labs.memebox;
+package com.unnsvc.memebox;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import com.unnsvc.labs.memebox.preferences.MemeboxPreferenceReader;
-import com.unnsvc.labs.memebox.preferences.MemeboxPreferences;
+import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
+import com.unnsvc.memebox.preferences.MemeboxPreferences;
 
 public class TestPreferences {
 

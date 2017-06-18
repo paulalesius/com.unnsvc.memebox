@@ -1,5 +1,5 @@
 
-package com.unnsvc.labs.memebox;
+package com.unnsvc.memebox;
 
 public class MemeboxException extends Exception {
 

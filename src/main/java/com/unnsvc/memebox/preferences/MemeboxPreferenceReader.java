@@ -1,5 +1,5 @@
 
-package com.unnsvc.labs.memebox.preferences;
+package com.unnsvc.memebox.preferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.unnsvc.labs.memebox.MemeboxUtils;
+import com.unnsvc.memebox.MemeboxUtils;
 
 public class MemeboxPreferenceReader {
 

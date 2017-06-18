@@ -1,5 +1,5 @@
 
-package com.unnsvc.labs.memebox;
+package com.unnsvc.memebox;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

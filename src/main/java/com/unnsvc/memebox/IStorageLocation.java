@@ -1,4 +1,4 @@
-package com.unnsvc.labs.memebox;
+package com.unnsvc.memebox;
 
 
 public interface IStorageLocation {

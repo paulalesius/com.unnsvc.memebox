@@ -1,4 +1,4 @@
-package com.unnsvc.labs.memebox.preferences;
+package com.unnsvc.memebox.preferences;
 
 
 public class MemeboxPreferenceSerialiser {
