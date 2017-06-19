@@ -1,5 +1,5 @@
 
-package com.unnsvc.memebox;
+package com.unnsvc.memebox.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,7 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.unnsvc.memebox.ui.LibraryScrollablePanel;
+import com.unnsvc.memebox.MemeboxException;
+import com.unnsvc.memebox.MemeboxUtils;
 
 public class MainFrame extends JFrame {
 
