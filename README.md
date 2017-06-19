@@ -10,7 +10,7 @@ It starts off with features enumerated below, and will later be expanded with fe
 - image metadata
 - search through all tags and metadata
 - drag and drop from/to browser, configure whether to remove metadata when doing so
-
+- maybe integration with *chan APIs
 
 
 ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/screenshot.jpg)
