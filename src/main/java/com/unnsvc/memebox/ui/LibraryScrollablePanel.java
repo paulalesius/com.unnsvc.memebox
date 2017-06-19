@@ -19,22 +19,22 @@ import com.unnsvc.memebox.MemeboxException;
  * @author noname
  *
  */
-public class LibraryScrollablePanel implements ListModel {
+public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 
 	private static final long serialVersionUID = 1L;
 	private int nr = 100;
-	private Object[] listData;
+	private ImageIcon[] listData;
 
 	public LibraryScrollablePanel() throws MemeboxException {
 
-		listData = new Object[nr];
+		listData = new ImageIcon[nr];
 		for (int i = 0; i < nr; i++) {
-			ImageIcon icon = createImageIcon("/META-INF/icons/dummy640x480.jpg", "An icon");
+			ImageIcon icon = createImageIcon("/META-INF/icons/dummy640x480.jpg", "HERE IS ICON");
 			Image scaled = getScaledImage(icon.getImage(), 300, 300);
 			ImageIcon scaledIcon = new ImageIcon(scaled);
 			JLabel l = new JLabel("HERE IS ICON", icon, JLabel.CENTER);
 			l.setSize(300, 300);
-			listData[i] = l;
+			listData[i] = scaledIcon;
 		}
 	}
 
@@ -67,7 +67,7 @@ public class LibraryScrollablePanel implements ListModel {
 	}
 
 	@Override
-	public Object getElementAt(int index) {
+	public ImageIcon getElementAt(int index) {
 
 		return listData[index];
 	}

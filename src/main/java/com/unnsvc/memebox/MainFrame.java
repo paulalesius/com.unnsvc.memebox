@@ -3,7 +3,6 @@ package com.unnsvc.memebox;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
@@ -11,10 +10,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -93,28 +91,30 @@ public class MainFrame extends JFrame {
 	private JComponent createLibraryContent() throws MemeboxException {
 
 		LibraryScrollablePanel libraryData = new LibraryScrollablePanel();
-		JList<Object> list = new JList<Object>(libraryData);
+		JList<ImageIcon> list = new JList<ImageIcon>(libraryData);
 		// @TODO a more pleasing lighter dark
 		Color color = UIManager.getColor("Panel.background");
 		list.setBackground(color);
-		list.setCellRenderer(new DefaultListCellRenderer() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-				if (value instanceof JLabel) {
-					// this.setText(((JLabel) value).getText());
-					this.setText(null);
-					// we just want icon for now
-					this.setIcon(((JLabel) value).getIcon());
-				}
-				return this;
-			}
-		});
+		// list.setCellRenderer(new DefaultListCellRenderer() {
+		//
+		// private static final long serialVersionUID = 1L;
+		//
+		// @Override
+		// public Component getListCellRendererComponent(JList<?> list, Object
+		// value, int index, boolean isSelected, boolean cellHasFocus) {
+		//
+		// super.getListCellRendererComponent(list, value, index, isSelected,
+		// cellHasFocus);
+		//
+		// if (value instanceof JLabel) {
+		// // this.setText(((JLabel) value).getText());
+		// this.setText(null);
+		// // we just want icon for now
+		// this.setIcon(((JLabel) value).getIcon());
+		// }
+		// return this;
+		// }
+		// });
 		// list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		JScrollPane scrollPane = new JScrollPane(list);
