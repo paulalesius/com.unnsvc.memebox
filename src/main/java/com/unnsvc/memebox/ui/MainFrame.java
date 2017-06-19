@@ -46,8 +46,8 @@ public class MainFrame extends JFrame {
 		JComponent mainTab = createMainTab();
 		tabbedPane.addTab("Library", mainTab);
 
-		JComponent optionsTab = createOptionsTab();
-		tabbedPane.addTab("Options", optionsTab);
+		JComponent configurationTab = createConfigurationTab();
+		tabbedPane.addTab("Configuration", configurationTab);
 
 		setLayout(new BorderLayout());
 		add(tabbedPane);
@@ -155,7 +155,7 @@ public class MainFrame extends JFrame {
 		return width / cellWidth;
 	}
 
-	private JComponent createOptionsTab() {
+	private JComponent createConfigurationTab() {
 
 		return new JPanel(new GridBagLayout());
 	}

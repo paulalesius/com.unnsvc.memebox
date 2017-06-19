@@ -24,9 +24,11 @@ import com.unnsvc.memebox.ui.MainFrame;
 
 public class Main {
 
-	private static Logger log = LoggerFactory.getLogger(MainFrame.class);
+	private static Logger log = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String... args) throws Exception {
+
+		log.info("Initializing application");
 
 		SwingUtilities.invokeLater(new Runnable() {
 

@@ -1,0 +1,19 @@
+<configuration debug="true">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ss.SSS} %-5level %40.40logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.unnsvc.memebox" level="DEBUG" />
+	
+	<!-- agent extends objectserver so logging should go together -->
+	<logger name="org.hibernate" level="INFO" />
+	<logger name="org.hibernate.tool.schema.spi" level="ERROR" />
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration> 
