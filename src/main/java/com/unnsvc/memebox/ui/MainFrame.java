@@ -55,11 +55,21 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 		JComponent configurationTab = createConfigurationTab();
 		tabbedPane.addTab("Configuration", configurationTab);
 
+		JComponent backupTab = createBackupTab();
+		tabbedPane.addTab("Backup", backupTab);
+
 		setLayout(new BorderLayout());
 		add(tabbedPane, BorderLayout.CENTER);
 
 		JComponent statusBar = createStatusBar();
 		add(statusBar, BorderLayout.SOUTH);
+	}
+
+	private JComponent createBackupTab() {
+
+		JPanel backupTab = new JPanel();
+
+		return backupTab;
 	}
 
 	private JComponent createStatusBar() {
