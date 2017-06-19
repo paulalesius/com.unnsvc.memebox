@@ -16,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import com.unnsvc.memebox.model.IPersistenceManager;
-import com.unnsvc.memebox.model.PersistenceManager;
 import com.unnsvc.memebox.preferences.IMemeboxPreferences;
 import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
 import com.unnsvc.memebox.ui.MainFrame;
@@ -71,10 +69,6 @@ public class Main {
 	private static IMemeboxContext initialise() throws ParserConfigurationException, SAXException, IOException {
 
 		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
-
-		System.setProperty("derby.system.home", prefs.getDatabase().getAbsolutePath());
-
-		IPersistenceManager persistence = PersistenceManager.INSTANCE;
-		return new MemeboxContext(prefs, persistence);
+		return new MemeboxContext(prefs);
 	}
 }
