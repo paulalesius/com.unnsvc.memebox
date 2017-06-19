@@ -10,17 +10,25 @@ public class MemeboxContext implements IMemeboxContext {
 
 	private IMemeboxPreferences prefs;
 	private Map<String, IMemeboxComponent> components;
+	private IStorageLocation storage;
 
-	public MemeboxContext(IMemeboxPreferences prefs) {
+	public MemeboxContext(IMemeboxPreferences prefs, IStorageLocation storage) {
 
 		this.prefs = prefs;
 		this.components = new HashMap<String, IMemeboxComponent>();
+		this.storage = storage;
 	}
 
 	@Override
 	public IMemeboxPreferences getPrefs() {
 
 		return prefs;
+	}
+
+	@Override
+	public IStorageLocation getStorage() {
+
+		return storage;
 	}
 
 	@Override

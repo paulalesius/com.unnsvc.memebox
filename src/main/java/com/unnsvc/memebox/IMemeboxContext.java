@@ -13,4 +13,6 @@ public interface IMemeboxContext {
 
 	public void destroy();
 
+	public IStorageLocation getStorage();
+
 }

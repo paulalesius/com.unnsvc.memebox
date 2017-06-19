@@ -4,7 +4,7 @@
 	<!-- data/images/<sha1sum>.ext -->
 
 	<storage location="target/images" />
-	<database location="target/data" />
+	<database location="src/test/resources/memebox.properties" />
 
 	<watch location="/data/storage/downloads1" />
 	<watch location="/data/storage/downloads2" />

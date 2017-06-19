@@ -27,8 +27,8 @@ public class StorageLocation implements IStorageLocation {
 
 	public StorageLocation(File storageLocation) throws MemeboxException {
 
+		log.info("Loading database from: " + storageLocation);
 		this.metadata = new HashMap<String, Map<String, String>>();
-
 		loadProperties(storageLocation);
 	}
 
@@ -59,6 +59,8 @@ public class StorageLocation implements IStorageLocation {
 
 			itemProps.put(key, properties.getProperty(key));
 		}
+		
+		log.info("Loaded " + metadata.size() + " items from database");
 	}
 
 	private boolean validate(String key) {

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import com.unnsvc.memebox.model.StorageLocation;
 import com.unnsvc.memebox.preferences.IMemeboxPreferences;
 import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
 import com.unnsvc.memebox.ui.MainFrame;
@@ -27,13 +28,15 @@ public class Main {
 	public static void main(String... args) throws Exception {
 
 		log.info("Initializing application");
+		
+		File prefs = new File("src/test/resources/memebox.xml");
 
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
 
 				try {
-					final IMemeboxContext context = initialise();
+					final IMemeboxContext context = initialise(prefs);
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
@@ -66,9 +69,10 @@ public class Main {
 		});
 	}
 
-	private static IMemeboxContext initialise() throws ParserConfigurationException, SAXException, IOException {
+	private static IMemeboxContext initialise(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
-		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
-		return new MemeboxContext(prefs);
+		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(prefsLocation);
+		StorageLocation location = new StorageLocation(prefs.getDatabase());
+		return new MemeboxContext(prefs, location);
 	}
 }
