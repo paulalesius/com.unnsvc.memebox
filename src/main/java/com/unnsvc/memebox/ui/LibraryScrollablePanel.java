@@ -1,21 +1,23 @@
 
 package com.unnsvc.memebox.ui;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import com.unnsvc.memebox.IMemeboxContext;
+import com.unnsvc.memebox.IStorageLocation;
 import com.unnsvc.memebox.MemeboxException;
+import com.unnsvc.memebox.MemeboxThreadPool;
+import com.unnsvc.memebox.model.StorageLocation;
 
 /**
  * @TODO implement, this is a dummy implementation for PoC
@@ -24,20 +26,25 @@ import com.unnsvc.memebox.MemeboxException;
  */
 public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 
-	private int nr = 100;
 	private ImageIcon dummy;
 	private ImageIcon[] listData;
 
 	public LibraryScrollablePanel(IMemeboxContext context) throws MemeboxException {
 
-		listData = new ImageIcon[nr];
-		for (int i = 0; i < nr; i++) {
+		ExecutorService executor = context.getComponent(MemeboxThreadPool.class);
+		IStorageLocation storageLocation = context.getComponent(StorageLocation.class);
+		Map<String, Map<String, String>> metadata = storageLocation.getMetadata();
+		listData = new ImageIcon[metadata.size()];
+		for (int i = 0; i < metadata.size(); i++) {
+
+			/**
+			 * For each image, create a dummy thumbnail and a worker thread that
+			 * loads the image in the background
+			 */
 			ImageIcon icon = createImageIcon("/META-INF/icons/dummy_128x128.jpg", "HERE IS ICON");
-			// Image scaled = getScaledImage(icon.getImage(), 300, 300);
-			// ImageIcon scaledIcon = new ImageIcon(scaled);
-			JLabel l = new JLabel("HERE IS ICON", icon, JLabel.CENTER);
-			l.setSize(300, 300);
 			listData[i] = icon;
+
+			executor.submit(new LibraryThumbnailWorker(context, this));
 		}
 	}
 
@@ -50,7 +57,6 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 				if (image != null) {
 
 					Image resized = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-
 					dummy = new ImageIcon(resized, description);
 				} else {
 					throw new MemeboxException("Not found: " + path);
@@ -62,26 +68,6 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 		}
 
 		return dummy;
-	}
-
-	/**
-	 * This seemed much faster than BufferedImage.getScaledInstance
-	 * 
-	 * @param srcImg
-	 * @param w
-	 * @param h
-	 * @return
-	 */
-	private Image getScaledImage(Image srcImg, int w, int h) {
-
-		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = resizedImg.createGraphics();
-
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2.drawImage(srcImg, 0, 0, w, h, null);
-		g2.dispose();
-
-		return resizedImg;
 	}
 
 	@Override
@@ -105,4 +91,27 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 	public void removeListDataListener(ListDataListener l) {
 
 	}
+
 }
+
+/**
+ * This seemed faster than BufferedImage.getScaledInstance
+ * 
+ * @param srcImg
+ * @param w
+ * @param h
+ * @return
+ */
+// private Image getScaledImage(Image srcImg, int w, int h) {
+//
+// BufferedImage resizedImg = new BufferedImage(w, h,
+// BufferedImage.TYPE_INT_ARGB);
+// Graphics2D g2 = resizedImg.createGraphics();
+//
+// g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+// RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+// g2.drawImage(srcImg, 0, 0, w, h, null);
+// g2.dispose();
+//
+// return resizedImg;
+// }

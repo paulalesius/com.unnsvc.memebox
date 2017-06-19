@@ -73,7 +73,14 @@ public class StorageLocation implements IStorageLocation {
 		}
 		return true;
 	}
+	
+	@Override
+	public Map<String, Map<String, String>> getMetadata() {
 
+		return metadata;
+	}
+
+	@Override
 	public String getProperty(String hash, String key) {
 
 		return metadata.get(hash).get(key);
