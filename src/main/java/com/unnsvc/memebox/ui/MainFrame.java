@@ -96,27 +96,7 @@ public class MainFrame extends JFrame {
 		// @TODO a more pleasing lighter dark
 		Color color = UIManager.getColor("Panel.background");
 		list.setBackground(color);
-		// list.setCellRenderer(new DefaultListCellRenderer() {
-		//
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public Component getListCellRendererComponent(JList<?> list, Object
-		// value, int index, boolean isSelected, boolean cellHasFocus) {
-		//
-		// super.getListCellRendererComponent(list, value, index, isSelected,
-		// cellHasFocus);
-		//
-		// if (value instanceof JLabel) {
-		// // this.setText(((JLabel) value).getText());
-		// this.setText(null);
-		// // we just want icon for now
-		// this.setIcon(((JLabel) value).getIcon());
-		// }
-		// return this;
-		// }
-		// });
-		// list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		JScrollPane scrollPane = new JScrollPane(list);
 
@@ -148,7 +128,7 @@ public class MainFrame extends JFrame {
 		searchField.setBackground(Color.WHITE);
 		searchField.setForeground(Color.GRAY);
 		searchField.setEditable(true);
-		searchField.setText("Search metadata/exif ...");
+		searchField.setText("Search tags/metadata/exif ...");
 		searchField.addFocusListener(new FocusListener() {
 
 			@Override
