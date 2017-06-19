@@ -27,9 +27,9 @@ public class MemeboxContext implements IMemeboxContext {
 	}
 
 	@Override
-	public void addComponent(String identifier, IMemeboxComponent component) {
+	public void addComponent(IMemeboxComponent component) {
 
-		components.put(identifier, component);
+		components.put(component.getIdentifier(), component);
 	}
 
 	@Override

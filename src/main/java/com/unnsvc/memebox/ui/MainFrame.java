@@ -12,6 +12,7 @@ import java.awt.event.FocusListener;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,28 @@ public class MainFrame extends JFrame {
 		tabbedPane.addTab("Configuration", configurationTab);
 
 		setLayout(new BorderLayout());
-		add(tabbedPane);
+		add(tabbedPane, BorderLayout.CENTER);
+
+		JComponent statusBar = createStatusBar();
+		add(statusBar, BorderLayout.SOUTH);
+	}
+
+	private JComponent createStatusBar() {
+
+		JPanel statusPanel = new JPanel();
+		statusPanel.setLayout(new BorderLayout());
+		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+
+		JLabel statusLabel = new JLabel("Loading...");
+		statusPanel.add(statusLabel, BorderLayout.CENTER);
+
+		MemeboxProgressBar progressBar = new MemeboxProgressBar();
+		progressBar.setIndeterminate(true);
+		progressBar.setStringPainted(false);
+		statusPanel.add(progressBar, BorderLayout.EAST);
+		context.addComponent(progressBar);
+
+		return statusPanel;
 	}
 
 	private JComponent createMainTab() throws MemeboxException {

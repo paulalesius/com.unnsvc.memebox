@@ -7,7 +7,7 @@ public interface IMemeboxContext {
 
 	public IMemeboxPreferences getPrefs();
 
-	public void addComponent(String identifier, IMemeboxComponent component);
+	public void addComponent(IMemeboxComponent component);
 
 	public IMemeboxComponent getComponent(String identifier);
 

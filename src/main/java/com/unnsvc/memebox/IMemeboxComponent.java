@@ -10,4 +10,5 @@ package com.unnsvc.memebox;
  */
 public interface IMemeboxComponent {
 
+	public String getIdentifier();
 }

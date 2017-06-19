@@ -1,6 +1,7 @@
 
 package com.unnsvc.memebox.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,15 +14,16 @@ public class ImageAsset {
 	 * The image identifiers will be their sha1sum
 	 */
 	@Id
-	public int id;
+	@Column(unique = true)
+	public String hash;
 
-	public void setId(int id) {
+	public void setId(String hash) {
 
-		this.id = id;
+		this.hash = hash;
 	}
 
-	public int getId() {
+	public String getId() {
 
-		return id;
+		return hash;
 	}
 }
