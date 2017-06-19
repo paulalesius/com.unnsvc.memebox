@@ -11,3 +11,4 @@ It starts off with features enumerated below, and will later be expanded with fe
 - search through all tags and metadata, configure whether to remove metadata when doing so
 - drag and drop from/to browser
 
+![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/screenshot.jpg)
