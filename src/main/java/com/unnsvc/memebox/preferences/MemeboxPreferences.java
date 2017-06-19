@@ -55,4 +55,9 @@ public class MemeboxPreferences implements IMemeboxPreferences {
 
 		return MemeboxPreferences.class.getName();
 	}
+
+	@Override
+	public void destroy() {
+
+	}
 }

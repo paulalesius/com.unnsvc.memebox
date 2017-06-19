@@ -204,4 +204,9 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 
 		return MainFrame.class.getName();
 	}
+
+	@Override
+	public void destroy() {
+
+	}
 }

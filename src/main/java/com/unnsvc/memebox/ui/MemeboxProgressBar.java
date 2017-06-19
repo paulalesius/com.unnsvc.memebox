@@ -14,4 +14,9 @@ public class MemeboxProgressBar extends JProgressBar implements IMemeboxComponen
 
 		return getClass().getName();
 	}
+
+	@Override
+	public void destroy() {
+
+	}
 }

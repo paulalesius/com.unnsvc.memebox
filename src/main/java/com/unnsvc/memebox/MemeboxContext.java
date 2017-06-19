@@ -32,6 +32,10 @@ public class MemeboxContext implements IMemeboxContext {
 	@Override
 	public void destroy() {
 
+		for (IMemeboxComponent component : components.values()) {
+			
+			component.destroy();
+		}
 	}
 
 	public void debugContext() {
