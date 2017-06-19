@@ -9,6 +9,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -20,13 +22,25 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
+import com.unnsvc.memebox.IMemeboxContext;
+import com.unnsvc.memebox.MemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.MemeboxUtils;
+import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
+import com.unnsvc.memebox.preferences.MemeboxPreferences;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger log = LoggerFactory.getLogger(MainFrame.class);
+	private MemeboxPreferences prefs;
+	private IMemeboxContext context;
 
 	private JTabbedPane tabbedPane;
 
@@ -51,15 +65,23 @@ public class MainFrame extends JFrame {
 
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setLayout(new BorderLayout());
+					frame.createContext();
 					frame.configureTabs();
 					// frame.pack();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
-				} catch (MemeboxException me) {
-					throw new RuntimeException(me);
+				} catch (Throwable throwable) {
+
+					log.error("Epic fail", throwable);
 				}
 			}
 		});
+	}
+
+	protected void createContext() throws ParserConfigurationException, SAXException, IOException {
+
+		prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
+		context = new MemeboxContext(prefs);
 	}
 
 	private void configureTabs() throws MemeboxException {
@@ -67,7 +89,7 @@ public class MainFrame extends JFrame {
 		tabbedPane = new JTabbedPane();
 
 		JComponent mainTab = createMainTab();
-		tabbedPane.addTab("Memebox", mainTab);
+		tabbedPane.addTab("Library", mainTab);
 
 		JComponent optionsTab = createOptionsTab();
 		tabbedPane.addTab("Options", optionsTab);
@@ -93,7 +115,7 @@ public class MainFrame extends JFrame {
 
 		LibraryScrollablePanel libraryData = new LibraryScrollablePanel();
 		JList<ImageIcon> list = new JList<ImageIcon>(libraryData);
-		// @TODO a more pleasing lighter dark
+		// @TODO a more pleasing lighter dark or something
 		Color color = UIManager.getColor("Panel.background");
 		list.setBackground(color);
 

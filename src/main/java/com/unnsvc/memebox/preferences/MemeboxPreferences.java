@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemeboxPreferences {
+public class MemeboxPreferences implements IMemeboxPreferences {
 
 	private File location;
 	private List<File> watchLocations;
@@ -20,9 +20,18 @@ public class MemeboxPreferences {
 		this.location = location;
 	}
 
+	public File getLocation() {
+
+		return location;
+	}
+
 	public void addWatchLocation(File location) {
 
 		this.watchLocations.add(location);
 	}
 
+	public List<File> getWatchLocations() {
+
+		return watchLocations;
+	}
 }
