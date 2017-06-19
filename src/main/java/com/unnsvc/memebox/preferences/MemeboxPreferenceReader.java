@@ -38,7 +38,7 @@ public class MemeboxPreferenceReader {
 		StreamSource schemaSource = new StreamSource(MemeboxPreferenceReader.class.getResourceAsStream("/META-INF/schema/memebox.xsd"));
 		Schema schema = schemaFactory.newSchema(new Source[] { schemaSource });
 		factory.setSchema(schema);
-		
+
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(location);
 
@@ -59,6 +59,11 @@ public class MemeboxPreferenceReader {
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				File location = new File(locationStr);
 				prefs.setLocation(location);
+			} else if (child.getNodeName().equals("database")) {
+				
+				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
+				File location = new File(locationStr);
+				prefs.setDatabase(location);
 			} else if (child.getNodeName().equals("watch")) {
 
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();

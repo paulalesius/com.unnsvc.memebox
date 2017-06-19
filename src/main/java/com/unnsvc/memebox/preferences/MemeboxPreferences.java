@@ -8,6 +8,7 @@ import java.util.List;
 public class MemeboxPreferences implements IMemeboxPreferences {
 
 	private File location;
+	private File database;
 	private List<File> watchLocations;
 
 	public MemeboxPreferences() {
@@ -20,18 +21,32 @@ public class MemeboxPreferences implements IMemeboxPreferences {
 		this.location = location;
 	}
 
+	@Override
 	public File getLocation() {
 
 		return location;
 	}
 
+	@Override
 	public void addWatchLocation(File location) {
 
 		this.watchLocations.add(location);
 	}
 
+	@Override
 	public List<File> getWatchLocations() {
 
 		return watchLocations;
+	}
+
+	public void setDatabase(File database) {
+
+		this.database = database;
+	}
+
+	@Override
+	public File getDatabase() {
+
+		return database;
 	}
 }

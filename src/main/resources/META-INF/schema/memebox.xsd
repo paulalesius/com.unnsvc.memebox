@@ -10,8 +10,27 @@
 	<xs:element name="memebox">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="storage" type="tns:storageType" minOccurs="1" maxOccurs="1" />
-				<xs:element name="watch" type="tns:storageType" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="storage" type="tns:storageType" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							Image asset storage location
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="database" type="tns:storageType" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							Database location
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="watch" type="tns:storageType" minOccurs="1" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>
+							Watch locations
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

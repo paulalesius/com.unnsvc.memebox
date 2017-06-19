@@ -51,12 +51,6 @@ public class MainFrame extends JFrame {
 
 	public static void main(String... args) throws Exception {
 
-		/**
-		 * @TODO see if this can be set in persistence.xml custom properties
-		 *       because it obviously won't work for production
-		 */
-		System.setProperty("derby.system.home", "target/derby/");
-
 		MemeboxUtils.configureLookAndFeel();
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -87,6 +81,9 @@ public class MainFrame extends JFrame {
 	protected void initialise() throws ParserConfigurationException, SAXException, IOException {
 
 		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
+
+		System.setProperty("derby.system.home", prefs.getDatabase().getAbsolutePath());
+
 		IPersistenceManager persistence = PersistenceManager.INSTANCE;
 		context = new MemeboxContext(prefs, persistence);
 	}
