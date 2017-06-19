@@ -59,7 +59,7 @@ public class StorageLocation implements IStorageLocation {
 
 			itemProps.put(key, properties.getProperty(key));
 		}
-		
+
 		log.info("Loaded " + metadata.size() + " items from database");
 	}
 
@@ -76,5 +76,11 @@ public class StorageLocation implements IStorageLocation {
 	public String getProperty(String hash, String key) {
 
 		return metadata.get(hash).get(key);
+	}
+
+	@Override
+	public String getIdentifier() {
+
+		return StorageLocation.class.getName();
 	}
 }

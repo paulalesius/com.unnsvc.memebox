@@ -1,6 +1,6 @@
+
 package com.unnsvc.memebox;
 
-
-public interface IStorageLocation {
+public interface IStorageLocation extends IMemeboxComponent {
 
 }

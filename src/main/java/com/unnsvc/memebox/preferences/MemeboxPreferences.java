@@ -49,4 +49,10 @@ public class MemeboxPreferences implements IMemeboxPreferences {
 
 		return database;
 	}
+
+	@Override
+	public String getIdentifier() {
+
+		return MemeboxPreferences.class.getName();
+	}
 }

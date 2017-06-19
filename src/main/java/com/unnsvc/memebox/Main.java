@@ -28,7 +28,7 @@ public class Main {
 	public static void main(String... args) throws Exception {
 
 		log.info("Initializing application");
-		
+
 		File prefs = new File("src/test/resources/memebox.xml");
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -73,6 +73,16 @@ public class Main {
 
 		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(prefsLocation);
 		StorageLocation location = new StorageLocation(prefs.getDatabase());
-		return new MemeboxContext(prefs, location);
+
+		int procs = Runtime.getRuntime().availableProcessors();
+		int threads = procs < 4 ? 4 : procs;
+		MemeboxThreadPool executor = new MemeboxThreadPool(threads);
+		MemeboxContext memeboxContext = new MemeboxContext();
+
+		memeboxContext.addComponent(executor);
+		memeboxContext.addComponent(prefs);
+		memeboxContext.addComponent(location);
+
+		return memeboxContext;
 	}
 }
