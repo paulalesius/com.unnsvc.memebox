@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +68,9 @@ public class MainFrame extends JFrame {
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
 		JLabel statusLabel = new JLabel("Loading...");
+		Border border = statusLabel.getBorder();
+		Border margin = new EmptyBorder(5, 5, 5, 5);
+		statusLabel.setBorder(new CompoundBorder(border, margin));
 		statusPanel.add(statusLabel, BorderLayout.CENTER);
 
 		MemeboxProgressBar progressBar = new MemeboxProgressBar();
