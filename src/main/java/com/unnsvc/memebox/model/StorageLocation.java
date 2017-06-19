@@ -19,11 +19,12 @@ import com.unnsvc.memebox.MemeboxException;
 public class StorageLocation implements IStorageLocation {
 
 	private Logger log = LoggerFactory.getLogger(StorageLocation.class);
+	// <hash, <property, value>>
 	private Map<String, Map<String, String>> metadata;
 	/**
 	 * @TODO pattern starts with sha1 hash
 	 */
-	private Pattern pattern = Pattern.compile("[a-zA-Z]+\\.[a-zA-Z0-9]+");
+	private Pattern pattern = Pattern.compile("[_a-zA-Z0-9]+\\.[_a-zA-Z0-9]+");
 
 	public StorageLocation(File storageLocation) throws MemeboxException {
 

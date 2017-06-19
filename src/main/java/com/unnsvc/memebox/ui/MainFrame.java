@@ -52,6 +52,9 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 		JComponent mainTab = createMainTab();
 		tabbedPane.addTab("Library", mainTab);
 
+		JComponent favoritesTab = createFavoritesTab();
+		tabbedPane.addTab("Favorites", favoritesTab);
+
 		JComponent configurationTab = createConfigurationTab();
 		tabbedPane.addTab("Configuration", configurationTab);
 
@@ -65,10 +68,15 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 		add(statusBar, BorderLayout.SOUTH);
 	}
 
+	private JComponent createFavoritesTab() {
+
+		JPanel favoritesTab = new JPanel();
+		return favoritesTab;
+	}
+
 	private JComponent createBackupTab() {
 
 		JPanel backupTab = new JPanel();
-
 		return backupTab;
 	}
 
