@@ -24,6 +24,7 @@ import com.unnsvc.memebox.ui.MainFrame;
 public class Main {
 
 	private static Logger log = LoggerFactory.getLogger(Main.class);
+	public static IMemeboxContext context;
 
 	public static void main(String... args) throws Exception {
 
@@ -36,11 +37,13 @@ public class Main {
 			public void run() {
 
 				try {
-					final IMemeboxContext context = initialise(prefs);
+					context = initialise(prefs);
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
+					context.addComponent(frame);
 					frame.setTitle("MemeBox is a memebox");
+
 					// remove this later
 					frame.setPreferredSize(new Dimension(1024, 768));
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,18 +58,35 @@ public class Main {
 						@Override
 						public void windowClosing(WindowEvent e) {
 
+							log.debug("Destroying main frame");
 							context.destroy();
 						}
 					});
 
 					frame.setVisible(true);
 
+					((MemeboxContext) context).debugContext();
+
 				} catch (Throwable throwable) {
 
 					log.error("Epic fail", throwable);
+				} finally {
+
+					synchronized (prefs) {
+
+						log.error("Initialized");
+						prefs.notifyAll();
+					}
 				}
 			}
 		});
+
+		/**
+		 * Block main until initialisation is complete
+		 */
+		synchronized (prefs) {
+			prefs.wait();
+		}
 	}
 
 	private static IMemeboxContext initialise(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {

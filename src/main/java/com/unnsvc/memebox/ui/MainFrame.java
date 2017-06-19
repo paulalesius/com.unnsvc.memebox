@@ -28,10 +28,11 @@ import javax.swing.border.EmptyBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.unnsvc.memebox.IMemeboxComponent;
 import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements IMemeboxComponent {
 
 	private static final long serialVersionUID = 1L;
 	private Logger log = LoggerFactory.getLogger(MainFrame.class);
@@ -115,6 +116,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 
+		// after GUI is created
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
@@ -195,5 +197,11 @@ public class MainFrame extends JFrame {
 	private JComponent createConfigurationTab() {
 
 		return new JPanel(new GridBagLayout());
+	}
+
+	@Override
+	public String getIdentifier() {
+
+		return MainFrame.class.getName();
 	}
 }

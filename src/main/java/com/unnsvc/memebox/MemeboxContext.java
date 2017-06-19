@@ -4,8 +4,12 @@ package com.unnsvc.memebox;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MemeboxContext implements IMemeboxContext {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private Map<String, IMemeboxComponent> components;
 
 	public MemeboxContext() {
@@ -28,5 +32,13 @@ public class MemeboxContext implements IMemeboxContext {
 	@Override
 	public void destroy() {
 
+	}
+
+	public void debugContext() {
+
+		for (String key : components.keySet()) {
+
+			log.debug(key + ": " + components.get(key).getClass());
+		}
 	}
 }
