@@ -1,4 +1,4 @@
-Memebox is a memebox
+# Memebox is a memebox
 
 It starts off with features enumerated below, and will later be expanded with features relevant to our interests
 
