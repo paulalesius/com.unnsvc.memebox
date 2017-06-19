@@ -116,7 +116,7 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 
 	private JComponent createLibraryContent() throws MemeboxException {
 
-		LibraryScrollablePanel libraryData = new LibraryScrollablePanel();
+		LibraryScrollablePanel libraryData = new LibraryScrollablePanel(context);
 		JList<ImageIcon> list = new JList<ImageIcon>(libraryData);
 		// @TODO a more pleasing lighter dark or something
 		Color color = UIManager.getColor("Panel.background");
