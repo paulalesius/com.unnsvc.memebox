@@ -14,12 +14,10 @@ public class StoragePath {
 
 	public enum EPath {
 
-		ORIGINAL_NAME, DESCRIPTION
 	}
 
 	public String serialise() {
 
 		return hash + "." + path.name().toLowerCase();
 	}
-
 }

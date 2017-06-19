@@ -1,23 +1,78 @@
 
 package com.unnsvc.memebox.model;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IStorageLocation;
-import com.unnsvc.memebox.model.StoragePath.EPath;
+import com.unnsvc.memebox.MemeboxException;
 
 public class StorageLocation implements IStorageLocation {
 
-	private Map<String, Map<EPath, String>> metadata;
+	private Logger log = LoggerFactory.getLogger(StorageLocation.class);
+	private Map<String, Map<String, String>> metadata;
+	/**
+	 * @TODO pattern starts with sha1 hash
+	 */
+	private Pattern pattern = Pattern.compile("[a-zA-Z]+\\.[a-zA-Z0-9]+");
 
-	public StorageLocation() {
+	public StorageLocation(File storageLocation) throws MemeboxException {
 
-		this.metadata = new HashMap<String, Map<EPath, String>>();
+		this.metadata = new HashMap<String, Map<String, String>>();
+
+		loadProperties(storageLocation);
 	}
 
-	public String getProperty(String hash, EPath path) {
+	public void loadProperties(File storageLocation) throws MemeboxException {
 
-		return metadata.get(hash).get(path);
+		Properties properties = new Properties();
+
+		try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(storageLocation))) {
+
+			properties.load(bis);
+		} catch (IOException ioe) {
+
+			throw new MemeboxException(ioe);
+		}
+
+		for (Object keyObj : properties.keySet()) {
+
+			String key = (String) keyObj;
+			validate(key);
+			String[] keyArr = key.split("\\.", 2);
+
+			Map<String, String> itemProps = metadata.get(keyArr[0]);
+
+			if (itemProps == null) {
+				itemProps = new HashMap<String, String>();
+				metadata.put(keyArr[0], itemProps);
+			}
+
+			itemProps.put(key, properties.getProperty(key));
+		}
+	}
+
+	private boolean validate(String key) {
+
+		if (!pattern.matcher(key).matches()) {
+
+			log.error("Invalid key: " + key);
+			return false;
+		}
+		return true;
+	}
+
+	public String getProperty(String hash, String key) {
+
+		return metadata.get(hash).get(key);
 	}
 }

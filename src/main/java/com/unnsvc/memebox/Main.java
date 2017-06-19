@@ -37,7 +37,7 @@ public class Main {
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
-					frame.setTitle("MemeBox");
+					frame.setTitle("MemeBox is a memebox");
 					// remove this later
 					frame.setPreferredSize(new Dimension(1024, 768));
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

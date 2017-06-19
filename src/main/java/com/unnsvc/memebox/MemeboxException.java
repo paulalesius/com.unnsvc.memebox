@@ -10,4 +10,9 @@ public class MemeboxException extends Exception {
 		super(message);
 	}
 
+	public MemeboxException(Throwable throwable) {
+
+		super(throwable);
+	}
+
 }
