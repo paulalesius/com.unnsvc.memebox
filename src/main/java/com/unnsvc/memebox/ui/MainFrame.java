@@ -99,24 +99,32 @@ public class MainFrame extends JFrame {
 
 	private JComponent createSearchFieldComponent() {
 
+		String placeholderText = "Filter tags/metadata/exif, use regex ...";
+
 		JTextField searchField = new JTextField();
 		searchField.setMinimumSize(searchField.getPreferredSize());
 		// @TODO grey out on focus
 		searchField.setBackground(Color.WHITE);
 		searchField.setForeground(Color.GRAY);
 		searchField.setEditable(true);
-		searchField.setText("Search tags/metadata/exif ...");
+		searchField.setText(placeholderText);
 		searchField.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
 
+				if (searchField.getText().equals(placeholderText)) {
+					searchField.setText(null);
+				}
 				searchField.setForeground(null);
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
+				if (searchField.getText().isEmpty()) {
+					searchField.setText(placeholderText);
+				}
 				searchField.setForeground(Color.GRAY);
 			}
 		});
