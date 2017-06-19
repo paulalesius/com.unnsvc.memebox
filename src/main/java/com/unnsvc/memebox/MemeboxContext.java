@@ -4,6 +4,7 @@ package com.unnsvc.memebox;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.unnsvc.memebox.model.IPersistenceManager;
 import com.unnsvc.memebox.preferences.IMemeboxPreferences;
 
 public class MemeboxContext implements IMemeboxContext {
@@ -11,7 +12,7 @@ public class MemeboxContext implements IMemeboxContext {
 	private IMemeboxPreferences prefs;
 	private Map<String, IMemeboxComponent> components;
 
-	public MemeboxContext(IMemeboxPreferences prefs) {
+	public MemeboxContext(IMemeboxPreferences prefs, IPersistenceManager persistence) {
 
 		this.prefs = prefs;
 		this.components = new HashMap<String, IMemeboxComponent>();

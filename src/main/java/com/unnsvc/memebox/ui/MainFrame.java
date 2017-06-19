@@ -32,14 +32,15 @@ import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.MemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.MemeboxUtils;
+import com.unnsvc.memebox.model.IPersistenceManager;
+import com.unnsvc.memebox.model.PersistenceManager;
+import com.unnsvc.memebox.preferences.IMemeboxPreferences;
 import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
-import com.unnsvc.memebox.preferences.MemeboxPreferences;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger log = LoggerFactory.getLogger(MainFrame.class);
-	private MemeboxPreferences prefs;
 	private IMemeboxContext context;
 
 	private JTabbedPane tabbedPane;
@@ -50,6 +51,12 @@ public class MainFrame extends JFrame {
 
 	public static void main(String... args) throws Exception {
 
+		/**
+		 * @TODO see if this can be set in persistence.xml custom properties
+		 *       because it obviously won't work for production
+		 */
+		System.setProperty("derby.system.home", "target/derby/");
+
 		MemeboxUtils.configureLookAndFeel();
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -59,15 +66,14 @@ public class MainFrame extends JFrame {
 				try {
 					MainFrame frame = new MainFrame();
 					frame.setTitle("MemeBox");
-
 					// remove this later
-					frame.setSize(new Dimension(1024, 768));
-
+					frame.setPreferredSize(new Dimension(1024, 768));
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setLayout(new BorderLayout());
-					frame.createContext();
+
+					frame.initialise();
 					frame.configureTabs();
-					// frame.pack();
+					frame.pack();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Throwable throwable) {
@@ -78,10 +84,11 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	protected void createContext() throws ParserConfigurationException, SAXException, IOException {
+	protected void initialise() throws ParserConfigurationException, SAXException, IOException {
 
-		prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
-		context = new MemeboxContext(prefs);
+		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
+		IPersistenceManager persistence = PersistenceManager.INSTANCE;
+		context = new MemeboxContext(prefs, persistence);
 	}
 
 	private void configureTabs() throws MemeboxException {
