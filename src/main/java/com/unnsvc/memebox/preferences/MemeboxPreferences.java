@@ -51,12 +51,6 @@ public class MemeboxPreferences implements IMemeboxPreferences {
 	}
 
 	@Override
-	public String getIdentifier() {
-
-		return MemeboxPreferences.class.getName();
-	}
-
-	@Override
 	public void destroy() {
 
 	}

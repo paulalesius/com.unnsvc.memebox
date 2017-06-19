@@ -14,7 +14,7 @@ public class TestMain {
 
 		Main.main(null);
 
-		MainFrame mainFrame = (MainFrame) Main.context.getComponent(MainFrame.class.getName());
+		MainFrame mainFrame = Main.context.getComponent(MainFrame.class);
 		mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
 		// mainFrame.dispose();
 

@@ -210,12 +210,6 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 	}
 
 	@Override
-	public String getIdentifier() {
-
-		return MainFrame.class.getName();
-	}
-
-	@Override
 	public void destroy() {
 
 	}

@@ -13,12 +13,6 @@ public class MemeboxThreadPool extends ThreadPoolExecutor implements IMemeboxCom
 	}
 
 	@Override
-	public String getIdentifier() {
-
-		return MemeboxThreadPool.class.getName();
-	}
-
-	@Override
 	public void destroy() {
 
 	}

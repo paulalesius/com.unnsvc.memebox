@@ -5,7 +5,7 @@ public interface IMemeboxContext {
 
 	public void addComponent(IMemeboxComponent component);
 
-	public IMemeboxComponent getComponent(String identifier);
+	public <T> T getComponent(Class<T> type);
 
 	public void destroy();
 

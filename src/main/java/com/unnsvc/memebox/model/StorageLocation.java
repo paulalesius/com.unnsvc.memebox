@@ -79,12 +79,6 @@ public class StorageLocation implements IStorageLocation {
 	}
 
 	@Override
-	public String getIdentifier() {
-
-		return StorageLocation.class.getName();
-	}
-
-	@Override
 	public void destroy() {
 
 	}

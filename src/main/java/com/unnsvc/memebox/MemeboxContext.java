@@ -10,39 +10,40 @@ import org.slf4j.LoggerFactory;
 public class MemeboxContext implements IMemeboxContext {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private Map<String, IMemeboxComponent> components;
+	private Map<Class<?>, IMemeboxComponent> components;
 
 	public MemeboxContext() {
 
-		this.components = new HashMap<String, IMemeboxComponent>();
+		this.components = new HashMap<Class<?>, IMemeboxComponent>();
 	}
 
 	@Override
 	public void addComponent(IMemeboxComponent component) {
 
-		components.put(component.getIdentifier(), component);
+		components.put(component.getClass(), component);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IMemeboxComponent getComponent(String identifier) {
+	public <T> T getComponent(Class<T> type) {
 
-		return components.get(identifier);
+		return (T) components.get(type);
 	}
 
 	@Override
 	public void destroy() {
 
 		for (IMemeboxComponent component : components.values()) {
-			
+
 			component.destroy();
 		}
 	}
 
 	public void debugContext() {
 
-		for (String key : components.keySet()) {
+		for (Class<?> type : components.keySet()) {
 
-			log.debug(key + ": " + components.get(key).getClass());
+			log.debug(type.getClass().getName() + ": " + components.get(type).getClass());
 		}
 	}
 }
