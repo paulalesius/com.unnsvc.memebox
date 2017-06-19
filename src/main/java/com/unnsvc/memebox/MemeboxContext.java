@@ -11,11 +11,13 @@ public class MemeboxContext implements IMemeboxContext {
 
 	private IMemeboxPreferences prefs;
 	private Map<String, IMemeboxComponent> components;
+	private IPersistenceManager persistence;
 
 	public MemeboxContext(IMemeboxPreferences prefs, IPersistenceManager persistence) {
 
 		this.prefs = prefs;
 		this.components = new HashMap<String, IMemeboxComponent>();
+		this.persistence = persistence;
 	}
 
 	@Override
@@ -34,5 +36,11 @@ public class MemeboxContext implements IMemeboxContext {
 	public IMemeboxComponent getComponent(String identifier) {
 
 		return components.get(identifier);
+	}
+
+	@Override
+	public void destroy() {
+
+		persistence.close();
 	}
 }

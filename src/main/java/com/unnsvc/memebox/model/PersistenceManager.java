@@ -24,6 +24,7 @@ public enum PersistenceManager implements IPersistenceManager {
 		return emFactory.createEntityManager();
 	}
 
+	@Override
 	public void close() {
 
 		emFactory.close();

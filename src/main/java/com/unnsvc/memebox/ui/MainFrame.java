@@ -3,14 +3,11 @@ package com.unnsvc.memebox.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -22,73 +19,27 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 import com.unnsvc.memebox.IMemeboxContext;
-import com.unnsvc.memebox.MemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
-import com.unnsvc.memebox.MemeboxUtils;
-import com.unnsvc.memebox.model.IPersistenceManager;
-import com.unnsvc.memebox.model.PersistenceManager;
-import com.unnsvc.memebox.preferences.IMemeboxPreferences;
-import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LoggerFactory.getLogger(MainFrame.class);
+	private Logger log = LoggerFactory.getLogger(MainFrame.class);
 	private IMemeboxContext context;
 
 	private JTabbedPane tabbedPane;
 
-	public MainFrame() {
+	public MainFrame(IMemeboxContext context) {
 
+		this.context = context;
 	}
 
-	public static void main(String... args) throws Exception {
-
-		MemeboxUtils.configureLookAndFeel();
-
-		SwingUtilities.invokeLater(new Runnable() {
-
-			public void run() {
-
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setTitle("MemeBox");
-					// remove this later
-					frame.setPreferredSize(new Dimension(1024, 768));
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setLayout(new BorderLayout());
-
-					frame.initialise();
-					frame.configureTabs();
-					frame.pack();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Throwable throwable) {
-
-					log.error("Epic fail", throwable);
-				}
-			}
-		});
-	}
-
-	protected void initialise() throws ParserConfigurationException, SAXException, IOException {
-
-		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
-
-		System.setProperty("derby.system.home", prefs.getDatabase().getAbsolutePath());
-
-		IPersistenceManager persistence = PersistenceManager.INSTANCE;
-		context = new MemeboxContext(prefs, persistence);
-	}
-
-	private void configureTabs() throws MemeboxException {
+	public void createUi() throws MemeboxException {
 
 		tabbedPane = new JTabbedPane();
 

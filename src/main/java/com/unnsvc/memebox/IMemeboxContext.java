@@ -11,4 +11,6 @@ public interface IMemeboxContext {
 
 	public IMemeboxComponent getComponent(String identifier);
 
+	public void destroy();
+
 }
