@@ -51,7 +51,7 @@ public class MemeboxPreferences implements IMemeboxPreferences {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyComponent() {
 
 	}
 }

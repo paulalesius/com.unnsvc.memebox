@@ -186,15 +186,19 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 	 */
 	private static void fixRowCountForVisibleColumns(JList list) {
 
-		int nCols = computeVisibleColumnCount(list);
-		int nItems = list.getModel().getSize();
+		// when there are no items then cell bounds returns null, maybe handle
+		// in a different way
+		if (list.getCellBounds(0, 0) != null) {
+			int nCols = computeVisibleColumnCount(list);
+			int nItems = list.getModel().getSize();
 
-		// Compute the number of rows that will result in the desired number of
-		// columns
-		int nRows = nItems / nCols;
-		if (nItems % nCols > 0)
-			nRows++;
-		list.setVisibleRowCount(nRows);
+			// Compute the number of rows that will result in the desired number
+			// of columns
+			int nRows = nItems / nCols;
+			if (nItems % nCols > 0)
+				nRows++;
+			list.setVisibleRowCount(nRows);
+		}
 	}
 
 	/**
@@ -218,7 +222,7 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyComponent() {
 
 	}
 }

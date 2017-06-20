@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import com.unnsvc.memebox.importer.MemeboxDirectoryWatcher;
+import com.unnsvc.memebox.importer.MemeboxDirectoryWatcherListener;
 import com.unnsvc.memebox.model.StorageLocation;
 import com.unnsvc.memebox.preferences.IMemeboxPreferences;
 import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
@@ -85,6 +87,7 @@ public class Main {
 		 * Block main until initialisation is complete
 		 */
 		synchronized (prefs) {
+			
 			prefs.wait();
 		}
 	}
@@ -98,10 +101,12 @@ public class Main {
 		int threads = procs < 4 ? 4 : procs;
 		MemeboxThreadPool executor = new MemeboxThreadPool(threads);
 		MemeboxContext memeboxContext = new MemeboxContext();
+		MemeboxDirectoryWatcher directoryWatcher = new MemeboxDirectoryWatcher(memeboxContext, new MemeboxDirectoryWatcherListener(memeboxContext));
 
 		memeboxContext.addComponent(executor);
 		memeboxContext.addComponent(prefs);
 		memeboxContext.addComponent(location);
+		memeboxContext.addComponent(directoryWatcher);
 
 		return memeboxContext;
 	}

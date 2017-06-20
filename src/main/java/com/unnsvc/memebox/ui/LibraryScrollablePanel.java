@@ -28,6 +28,7 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 
 	private ImageIcon dummy;
 	private ImageIcon[] listData;
+	private IMemeboxContext context;
 
 	public LibraryScrollablePanel(IMemeboxContext context) throws MemeboxException {
 
@@ -35,6 +36,8 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 		IStorageLocation storageLocation = context.getComponent(StorageLocation.class);
 		Map<String, Map<String, String>> metadata = storageLocation.getMetadata();
 		listData = new ImageIcon[metadata.size()];
+		this.context = context;
+
 		for (int i = 0; i < metadata.size(); i++) {
 
 			/**
@@ -73,7 +76,7 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 	@Override
 	public int getSize() {
 
-		return 100;
+		return context.getComponent(StorageLocation.class).getMetadata().size();
 	}
 
 	@Override

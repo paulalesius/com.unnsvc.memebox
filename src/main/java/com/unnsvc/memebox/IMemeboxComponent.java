@@ -10,5 +10,5 @@ package com.unnsvc.memebox;
  */
 public interface IMemeboxComponent {
 
-	public void destroy();
+	public void destroyComponent() throws MemeboxException;
 }

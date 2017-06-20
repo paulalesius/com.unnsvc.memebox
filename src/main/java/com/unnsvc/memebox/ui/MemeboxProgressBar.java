@@ -10,7 +10,7 @@ public class MemeboxProgressBar extends JProgressBar implements IMemeboxComponen
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void destroy() {
+	public void destroyComponent() {
 
 	}
 }

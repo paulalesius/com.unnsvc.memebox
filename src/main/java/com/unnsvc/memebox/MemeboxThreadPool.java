@@ -13,7 +13,7 @@ public class MemeboxThreadPool extends ThreadPoolExecutor implements IMemeboxCom
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyComponent() {
 
 	}
 }

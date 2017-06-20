@@ -35,7 +35,13 @@ public class MemeboxContext implements IMemeboxContext {
 
 		for (IMemeboxComponent component : components.values()) {
 
-			component.destroy();
+			try {
+
+				component.destroyComponent();
+			} catch (Throwable throwable) {
+
+				log.error("Exception while destroying: " + component.getClass().getName(), throwable);
+			}
 		}
 	}
 

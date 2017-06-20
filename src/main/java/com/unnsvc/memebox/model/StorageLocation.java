@@ -87,7 +87,7 @@ public class StorageLocation implements IStorageLocation {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyComponent() {
 
 	}
 }
