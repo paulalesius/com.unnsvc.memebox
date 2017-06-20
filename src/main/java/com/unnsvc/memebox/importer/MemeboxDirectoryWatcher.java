@@ -43,70 +43,123 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 	public void run() {
 
 		try {
-			log.info("Starting wtch service");
+			log.info("Starting watch service");
 
-			IMemeboxPreferences prefs = context.getComponent(MemeboxPreferences.class);
-			try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
+			runInitialise();
+			runMainLoop();
+		} catch (InterruptedException | IOException ioe) {
 
-				for (File watchLocation : prefs.getWatchLocations()) {
+			throw new RuntimeException(ioe);
+		}
+	}
 
-					if (watchLocation.exists()) {
+	private void runMainLoop() throws IOException, InterruptedException {
 
-						Path path = watchLocation.toPath();
-						path.register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
+		IMemeboxPreferences prefs = context.getComponent(MemeboxPreferences.class);
+		try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
-					} else {
+			for (File watchLocation : prefs.getWatchLocations()) {
 
-						log.warn("Watch location not available: " + watchLocation);
-					}
+				if (watchLocation.exists()) {
+
+					Path path = watchLocation.toPath();
+					path.register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
+
+				} else {
+
+					log.warn("Watch location not available: " + watchLocation);
 				}
+			}
 
-				if (!prefs.getWatchLocations().isEmpty()) {
+			if (!prefs.getWatchLocations().isEmpty()) {
 
-					executing.set(true);
+				executing.set(true);
 
-					/**
-					 * @TODO while loop on something abortable so we can close
-					 *       this component
-					 */
-					while (executing.get()) {
+				/**
+				 * @TODO while loop on something abortable so we can close this
+				 *       component
+				 */
+				while (executing.get()) {
 
-						WatchKey key = watchService.poll(1, TimeUnit.SECONDS);
-						if (key != null) {
-							for (WatchEvent<?> watchEvent : key.pollEvents()) {
+					WatchKey key = watchService.poll(1, TimeUnit.SECONDS);
+					if (key != null) {
+						for (WatchEvent<?> watchEvent : key.pollEvents()) {
 
-								Kind<?> kind = watchEvent.kind();
-								if (kind == StandardWatchEventKinds.OVERFLOW) {
-									// invalid or something
-									continue;
-								} else if (kind == StandardWatchEventKinds.ENTRY_CREATE || kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+							Kind<?> kind = watchEvent.kind();
+							if (kind == StandardWatchEventKinds.OVERFLOW) {
+								// invalid or something
+								continue;
+							} else if (kind == StandardWatchEventKinds.ENTRY_CREATE || kind == StandardWatchEventKinds.ENTRY_MODIFY) {
 
-									Path path = (Path) watchEvent.context();
-									watchListener.onEntryModify(path);
+								Path path = (Path) watchEvent.context();
+
+								// @TODO don't convert paths back and forth
+								String extSuffix = getFileExtension(path.toFile());
+								if (extSuffix != null) {
+
+									ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
+									watchListener.onEntryModify(path, ext);
 								}
 
-								// process event
-
-								// end
-								if (key.reset()) {
-
-									continue;
-								}
 							}
-						} else {
-							// No watch directories or something like that, so
-							// we make the loop block to spare cycles
-							synchronized (this) {
 
-								this.wait(3000);
+							// process event
+
+							// end
+							if (key.reset()) {
+
+								continue;
 							}
+						}
+					} else {
+						// No watch directories or something like that, so
+						// we make the loop block to spare cycles
+						synchronized (this) {
+
+							this.wait(3000);
 						}
 					}
 				}
 			}
-		} catch (InterruptedException | IOException ioe) {
+		}
+	}
 
-			throw new RuntimeException(ioe);
+	/**
+	 * Here we want to search thought the watched folders and evaluate the items
+	 */
+	private void runInitialise() {
+
+		IMemeboxPreferences prefs = context.getComponent(MemeboxPreferences.class);
+		for (File watchLocation : prefs.getWatchLocations()) {
+
+			if (watchLocation.isDirectory()) {
+				runInitialise(watchLocation);
+			}
+		}
+	}
+
+	private void runInitialise(File watchLocation) {
+
+		for (File contained : watchLocation.listFiles()) {
+
+			if (executing.get()) {
+				if (contained.isFile()) {
+
+					String extSuffix = getFileExtension(contained);
+					if (extSuffix != null) {
+
+						ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
+						watchListener.onInitialise(contained.toPath(), ext);
+					}
+				} else if (contained.isDirectory()) {
+
+					runInitialise(contained);
+				}
+			} else {
+
+				// stopped execution so we abort the recursive
+				break;
+			}
 		}
 	}
 
@@ -116,10 +169,23 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 		log.info("Destroying");
 		executing.set(false);
 		try {
-			join(5000);
+			join(1000);
 		} catch (InterruptedException ie) {
 
 			throw new MemeboxException(ie);
+		}
+	}
+
+	private String getFileExtension(File file) {
+
+		String name = file.getName();
+		int atPosition = name.lastIndexOf(".");
+		if (atPosition == -1) {
+
+			return null;
+		} else {
+
+			return name.substring(atPosition + 1);
 		}
 	}
 

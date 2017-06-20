@@ -10,5 +10,12 @@ public interface IMemeboxDirectoryWatcherListener {
 	 * 
 	 * @param path
 	 */
-	public void onEntryModify(Path path);
+	public void onEntryModify(Path path, ESupportedExt fileType);
+
+	/**
+	 * This is called on application startup
+	 * 
+	 * @param path
+	 */
+	public void onInitialise(Path path, ESupportedExt fileType);
 }

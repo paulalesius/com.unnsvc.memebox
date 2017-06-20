@@ -19,8 +19,14 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 	}
 
 	@Override
-	public void onEntryModify(Path path) {
+	public void onInitialise(Path path, ESupportedExt ext) {
 
-		log.trace("On modify " + path);
+		log.trace("On initialise " + path + " ext: " + ext);
+	}
+
+	@Override
+	public void onEntryModify(Path path, ESupportedExt ext) {
+
+		log.trace("On modify " + path + " ext: " + ext);
 	}
 }
