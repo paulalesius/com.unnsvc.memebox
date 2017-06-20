@@ -23,7 +23,7 @@ import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
-import com.unnsvc.memebox.model.StorageLocation;
+import com.unnsvc.memebox.storage.StorageLocation;
 
 /**
  * @TODO This class should really handoff to executor service to process them

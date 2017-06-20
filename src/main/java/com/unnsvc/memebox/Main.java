@@ -20,7 +20,7 @@ import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfigReader;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcher;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcherListener;
-import com.unnsvc.memebox.model.StorageLocation;
+import com.unnsvc.memebox.storage.StorageLocation;
 import com.unnsvc.memebox.ui.MainFrame;
 
 public class Main {

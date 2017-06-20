@@ -1,5 +1,5 @@
 
-package com.unnsvc.memebox.model;
+package com.unnsvc.memebox.storage;
 
 public class StoragePath {
 

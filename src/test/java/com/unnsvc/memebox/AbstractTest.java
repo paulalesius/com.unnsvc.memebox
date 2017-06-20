@@ -7,7 +7,7 @@ import org.junit.Before;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfigReader;
-import com.unnsvc.memebox.model.StorageLocation;
+import com.unnsvc.memebox.storage.StorageLocation;
 
 public abstract class AbstractTest {
 

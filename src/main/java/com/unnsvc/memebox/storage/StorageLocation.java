@@ -1,5 +1,5 @@
 
-package com.unnsvc.memebox.model;
+package com.unnsvc.memebox.storage;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

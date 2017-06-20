@@ -17,7 +17,7 @@ import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.IStorageLocation;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.MemeboxThreadPool;
-import com.unnsvc.memebox.model.StorageLocation;
+import com.unnsvc.memebox.storage.StorageLocation;
 
 /**
  * @TODO implement, this is a dummy implementation for PoC

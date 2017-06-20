@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.unnsvc.memebox.model.StorageLocation;
+import com.unnsvc.memebox.storage.StorageLocation;
 
 public class TestStorageLocation extends AbstractBaseTest {
 
