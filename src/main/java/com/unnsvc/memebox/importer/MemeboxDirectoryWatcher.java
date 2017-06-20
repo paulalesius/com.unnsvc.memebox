@@ -62,6 +62,7 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 
 				if (watchLocation.exists()) {
 
+					log.trace("Watching: " + watchLocation);
 					Path path = watchLocation.toPath();
 					path.register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
 
@@ -141,24 +142,21 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 	private void runInitialise(File watchLocation) {
 
 		for (File contained : watchLocation.listFiles()) {
+			log.trace("Try " + watchLocation);
 
-			if (executing.get()) {
-				if (contained.isFile()) {
+			if (contained.isFile()) {
 
-					String extSuffix = getFileExtension(contained);
-					if (extSuffix != null) {
+				String extSuffix = getFileExtension(contained);
+				if (extSuffix != null) {
 
-						ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
-						watchListener.onInitialise(contained.toPath(), ext);
-					}
-				} else if (contained.isDirectory()) {
+					log.trace("Watcher found " + contained + " ext: " + extSuffix);
 
-					runInitialise(contained);
+					ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
+					watchListener.onInitialise(contained.toPath(), ext);
 				}
-			} else {
+			} else if (contained.isDirectory()) {
 
-				// stopped execution so we abort the recursive
-				break;
+				runInitialise(contained);
 			}
 		}
 	}
@@ -185,7 +183,7 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 			return null;
 		} else {
 
-			return name.substring(atPosition + 1);
+			return name.substring(atPosition + 1).toLowerCase();
 		}
 	}
 

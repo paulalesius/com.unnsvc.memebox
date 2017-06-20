@@ -7,10 +7,6 @@
 	</appender>
 
 	<logger name="com.unnsvc.memebox" level="INFO" />
-	
-	<!-- agent extends objectserver so logging should go together -->
-	<logger name="org.hibernate" level="INFO" />
-	<logger name="org.hibernate.tool.schema" level="ERROR" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

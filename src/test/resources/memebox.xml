@@ -6,7 +6,7 @@
 	<storage location="target/test-classes/data" />
 	<database location="target/test-classes/memebox.properties" />
 
-	<watch location="target/test-classes/data/images/import" />
+	<watch location="target/test-classes/import" />
 	<watch location="/data/storage/downloads2" />
 
 </memebox>
