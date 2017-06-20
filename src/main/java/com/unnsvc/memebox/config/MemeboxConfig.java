@@ -1,17 +1,17 @@
 
-package com.unnsvc.memebox.preferences;
+package com.unnsvc.memebox.config;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemeboxPreferences implements IMemeboxPreferences {
+public class MemeboxConfig implements IMemeboxConfig {
 
 	private File location;
 	private File database;
 	private List<File> watchLocations;
 
-	public MemeboxPreferences() {
+	public MemeboxConfig() {
 
 		watchLocations = new ArrayList<File>();
 	}

@@ -1,5 +1,5 @@
 
-package com.unnsvc.memebox.preferences;
+package com.unnsvc.memebox.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,15 +19,15 @@ import org.xml.sax.SAXException;
 
 import com.unnsvc.memebox.MemeboxUtils;
 
-public class MemeboxPreferenceReader {
+public class MemeboxConfigurationReader {
 
-	public MemeboxPreferenceReader() {
+	public MemeboxConfigurationReader() {
 
 	}
 
-	public static MemeboxPreferences readPreferences(File location) throws ParserConfigurationException, SAXException, IOException {
+	public static MemeboxConfig readPreferences(File location) throws ParserConfigurationException, SAXException, IOException {
 
-		MemeboxPreferences prefs = new MemeboxPreferences();
+		MemeboxConfig prefs = new MemeboxConfig();
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
@@ -35,7 +35,7 @@ public class MemeboxPreferenceReader {
 
 		// validate
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		StreamSource schemaSource = new StreamSource(MemeboxPreferenceReader.class.getResourceAsStream("/META-INF/schema/memebox.xsd"));
+		StreamSource schemaSource = new StreamSource(MemeboxConfigurationReader.class.getResourceAsStream("/META-INF/schema/memebox.xsd"));
 		Schema schema = schemaFactory.newSchema(new Source[] { schemaSource });
 		factory.setSchema(schema);
 
@@ -50,7 +50,7 @@ public class MemeboxPreferenceReader {
 		return prefs;
 	}
 
-	private static void handleMemebox(MemeboxPreferences prefs, Node memeboxNode) {
+	private static void handleMemebox(MemeboxConfig prefs, Node memeboxNode) {
 
 		MemeboxUtils.listChildren(memeboxNode, child -> {
 

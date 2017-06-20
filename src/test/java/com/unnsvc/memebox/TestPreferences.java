@@ -9,14 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
-import com.unnsvc.memebox.preferences.MemeboxPreferences;
+import com.unnsvc.memebox.config.MemeboxConfigurationReader;
+import com.unnsvc.memebox.config.MemeboxConfig;
 
 public class TestPreferences {
 
 	@Test
 	public void testParse() throws ParserConfigurationException, SAXException, IOException {
 
-		MemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(new File("src/test/resources/memebox.xml"));
+		MemeboxConfig prefs = MemeboxConfigurationReader.readPreferences(new File("src/test/resources/memebox.xml"));
 	}
 }

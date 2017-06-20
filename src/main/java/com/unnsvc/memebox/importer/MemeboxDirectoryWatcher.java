@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
-import com.unnsvc.memebox.preferences.IMemeboxPreferences;
-import com.unnsvc.memebox.preferences.MemeboxPreferences;
+import com.unnsvc.memebox.config.IMemeboxConfig;
+import com.unnsvc.memebox.config.MemeboxConfig;
 
 public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectoryWatcher {
 
@@ -55,7 +55,7 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 
 	private void runMainLoop() throws IOException, InterruptedException {
 
-		IMemeboxPreferences prefs = context.getComponent(MemeboxPreferences.class);
+		IMemeboxConfig prefs = context.getComponent(MemeboxConfig.class);
 		try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
 			for (File watchLocation : prefs.getWatchLocations()) {
@@ -129,7 +129,7 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 	 */
 	private void runInitialise() {
 
-		IMemeboxPreferences prefs = context.getComponent(MemeboxPreferences.class);
+		IMemeboxConfig prefs = context.getComponent(MemeboxConfig.class);
 		for (File watchLocation : prefs.getWatchLocations()) {
 
 			if (watchLocation.isDirectory()) {

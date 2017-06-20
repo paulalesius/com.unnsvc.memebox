@@ -16,11 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import com.unnsvc.memebox.config.IMemeboxConfig;
+import com.unnsvc.memebox.config.MemeboxConfigurationReader;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcher;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcherListener;
 import com.unnsvc.memebox.model.StorageLocation;
-import com.unnsvc.memebox.preferences.IMemeboxPreferences;
-import com.unnsvc.memebox.preferences.MemeboxPreferenceReader;
 import com.unnsvc.memebox.ui.MainFrame;
 
 public class Main {
@@ -94,7 +94,7 @@ public class Main {
 
 	private static IMemeboxContext initialise(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
-		IMemeboxPreferences prefs = MemeboxPreferenceReader.readPreferences(prefsLocation);
+		IMemeboxConfig prefs = MemeboxConfigurationReader.readPreferences(prefsLocation);
 		StorageLocation location = new StorageLocation(prefs.getDatabase());
 
 		int procs = Runtime.getRuntime().availableProcessors();

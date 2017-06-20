@@ -1,12 +1,12 @@
 
-package com.unnsvc.memebox.preferences;
+package com.unnsvc.memebox.config;
 
 import java.io.File;
 import java.util.List;
 
 import com.unnsvc.memebox.IMemeboxComponent;
 
-public interface IMemeboxPreferences extends IMemeboxComponent {
+public interface IMemeboxConfig extends IMemeboxComponent {
 
 	public File getDatabase();
 
