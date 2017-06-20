@@ -17,6 +17,7 @@ public class MemeboxConfig implements IMemeboxConfig {
 	private File databaseFile;
 	private List<WatchLocation> watchLocations;
 	private File backupLocation;
+	private IThumbnailsConfig thumbnailsConfig;
 
 	public MemeboxConfig() {
 
@@ -38,6 +39,12 @@ public class MemeboxConfig implements IMemeboxConfig {
 	public File getImageStorageLocation() {
 
 		return new File(getStorageLocation(), MemeboxConstants.NAME_DATA_IMAGE_DIRECTORY);
+	}
+
+	@Override
+	public File getThumbnailsStorageLocation() {
+
+		return new File(getStorageLocation(), MemeboxConstants.NAME_DATA_THUMBNAIL_DIRECTORY);
 	}
 
 	@Override
@@ -83,6 +90,17 @@ public class MemeboxConfig implements IMemeboxConfig {
 	public void setBackupLocation(File backupLocation) {
 
 		this.backupLocation = backupLocation;
+	}
+
+	@Override
+	public IThumbnailsConfig getThumbnailsConfig() {
+
+		return thumbnailsConfig;
+	}
+
+	public void setThumbnailsConfig(IThumbnailsConfig thumbnailsConfig) {
+
+		this.thumbnailsConfig = thumbnailsConfig;
 	}
 
 	@Override

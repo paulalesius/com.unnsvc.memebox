@@ -22,6 +22,8 @@ public class MemeboxConfigSerialiser {
 		sb.append("\t<storage location=\"" + config.getStorageLocation() + "\" />").append(NL);
 		sb.append("\t<database file=\"" + config.getDatabaseFile() + "\" />").append(NL);
 		sb.append("\t<backup location=\"" + config.getBackupLocation() + "\" />").append(NL);
+		IThumbnailsConfig thumbConfig = config.getThumbnailsConfig();
+		sb.append("\t<thumbnails width=\"" + thumbConfig.getWidth() + "\" height=\"" + thumbConfig.getHeight() + "\" />").append(NL);
 
 		for (WatchLocation watchLocation : config.getWatchLocations()) {
 

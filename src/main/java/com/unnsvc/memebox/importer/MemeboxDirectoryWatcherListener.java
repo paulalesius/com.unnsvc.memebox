@@ -1,6 +1,8 @@
 
 package com.unnsvc.memebox.importer;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +24,7 @@ import com.unnsvc.memebox.IStorageLocation;
 import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
+import com.unnsvc.memebox.config.IThumbnailsConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
 import com.unnsvc.memebox.storage.StorageLocation;
 
@@ -58,8 +61,13 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 		if (!imageStore.exists()) {
 			imageStore.mkdirs();
 		}
-
 		File imageStoreLocation = new File(imageStore, digestString + "." + ext.getDefaultExt());
+
+		File thumbStore = config.getThumbnailsStorageLocation();
+		if (!thumbStore.exists()) {
+			thumbStore.mkdirs();
+		}
+		File thumbStoreLocation = new File(thumbStore, digestString + "." + MemeboxConstants.FORMAT_THUMBNAILS.toLowerCase());
 
 		if (!imageStoreLocation.exists()) {
 			try {
@@ -77,6 +85,13 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 				storage.getMetadata().put(digestString, imageProps);
 
 				FileUtils.copyFile(path.toFile(), imageStoreLocation);
+				IThumbnailsConfig thumbConfig = config.getThumbnailsConfig();
+
+				BufferedImage thumbnail = getScaledImage(image, thumbConfig.getWidth(), thumbConfig.getHeight());
+				imageProps.put(MemeboxConstants.META_THUMBNAIL_WIDTH, thumbConfig.getWidth() + "");
+				imageProps.put(MemeboxConstants.META_THUMBNAIL_HEIGHT, thumbConfig.getHeight() + "");
+				ImageIO.write(thumbnail, MemeboxConstants.FORMAT_THUMBNAILS, thumbStoreLocation);
+
 			} catch (IOException ioe) {
 				throw new MemeboxException(ioe);
 			}
@@ -105,6 +120,26 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 
 			throw new MemeboxException(e);
 		}
+	}
+
+	/**
+	 * @TODO preserve aspect
+	 * 
+	 * @param srcImg
+	 * @param w
+	 * @param h
+	 * @return
+	 */
+	private BufferedImage getScaledImage(BufferedImage srcImg, int w, int h) {
+
+		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = resizedImg.createGraphics();
+
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(srcImg, 0, 0, w, h, null);
+		g2.dispose();
+
+		return resizedImg;
 	}
 
 }

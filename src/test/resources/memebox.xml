@@ -3,6 +3,7 @@
 	<storage location="target/test-classes/data" />
 	<database file="target/test-classes/memebox.properties" />
 	<backup location="target/test-classes/backups" />
+	<thumbnails width="300" height="300" />
 	<watch location="target/test-classes/import" autoimport="true" />
 	<watch location="/data/storage/downloads2" autoimport="false" />
 </memebox>

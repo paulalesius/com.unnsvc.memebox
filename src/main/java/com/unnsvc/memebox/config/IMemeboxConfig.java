@@ -21,4 +21,9 @@ public interface IMemeboxConfig extends IMemeboxComponent {
 	public File getBackupLocation();
 
 	public File getImageStorageLocation();
+	
+	public File getThumbnailsStorageLocation();
+
+	public IThumbnailsConfig getThumbnailsConfig();
+
 }

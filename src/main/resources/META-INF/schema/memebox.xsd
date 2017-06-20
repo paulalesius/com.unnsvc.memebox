@@ -4,13 +4,20 @@
 	<xs:complexType name="fileType">
 		<xs:sequence>
 		</xs:sequence>
-		<xs:attribute name="file" type="xs:string" />
+		<xs:attribute name="file" type="xs:string" use="required" />
 	</xs:complexType>
 
 	<xs:complexType name="locationType">
 		<xs:sequence>
 		</xs:sequence>
-		<xs:attribute name="location" type="xs:string" />
+		<xs:attribute name="location" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="thumbnailsType">
+		<xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="width" type="xs:int" use="required" />
+		<xs:attribute name="height" type="xs:int" use="required" />
 	</xs:complexType>
 
 	<xs:complexType name="watchLocationType">
@@ -38,6 +45,13 @@
 					</xs:annotation>
 				</xs:element>
 				<xs:element name="backup" type="tns:locationType" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							Database location
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="thumbnails" type="tns:thumbnailsType" minOccurs="1" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation>
 							Database location

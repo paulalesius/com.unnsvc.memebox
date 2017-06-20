@@ -64,6 +64,13 @@ public class MemeboxConfigReader {
 				String locationStr = child.getAttributes().getNamedItem("file").getNodeValue();
 				File location = new File(locationStr);
 				prefs.setDatabaseFile(location);
+			} else if (child.getNodeName().equals("thumbnails")) {
+
+				String widthStr = child.getAttributes().getNamedItem("width").getNodeValue();
+				String heightStr = child.getAttributes().getNamedItem("height").getNodeValue();
+
+				ThumbnailsConfig thumbConfig = new ThumbnailsConfig(Integer.valueOf(widthStr), Integer.valueOf(heightStr));
+				prefs.setThumbnailsConfig(thumbConfig);
 			} else if (child.getNodeName().equals("watch")) {
 
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
