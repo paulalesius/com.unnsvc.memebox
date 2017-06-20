@@ -3,10 +3,10 @@
 
 	<!-- data/images/<sha1sum>.ext -->
 
-	<storage location="src/test/resources/data" />
-	<database location="src/test/resources/memebox.properties" />
+	<storage location="target/test-classes/data" />
+	<database location="target/test-classes/memebox.properties" />
 
-	<watch location="/data/storage/downloads1" />
+	<watch location="target/test-classes/data/images/import" />
 	<watch location="/data/storage/downloads2" />
 
 </memebox>
