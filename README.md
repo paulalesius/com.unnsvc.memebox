@@ -11,6 +11,7 @@ It starts off with features enumerated below, and will later be expanded with fe
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) search through all tags and metadata
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) drag and drop from/to browser, configure whether to remove metadata when doing so
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) maybe integration with *chan APIs
+- ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) GUI - implement full Graphical User Interface
 
 
 ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/screenshot.jpg)
