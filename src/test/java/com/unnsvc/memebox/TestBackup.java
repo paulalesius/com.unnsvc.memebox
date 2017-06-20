@@ -1,6 +1,9 @@
 
 package com.unnsvc.memebox;
 
+import java.io.File;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.unnsvc.memebox.backup.IMemeboxBackup;
@@ -12,6 +15,9 @@ public class TestBackup extends AbstractTest {
 	public void test() throws Exception {
 
 		IMemeboxBackup backup = new MemeboxBackup(getContext());
-		backup.performBackup();
+		File backupFile = backup.performBackup();
+
+		Assert.assertTrue(backupFile.exists());
+		Assert.assertTrue(backupFile.length() > 0);
 	}
 }
