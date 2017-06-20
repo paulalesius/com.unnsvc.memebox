@@ -30,12 +30,11 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 
-		File configLocation = null;
-		
-		if (args != null && args.length > 1) {
-			String pathStr = args[0];
-			configLocation = new File(pathStr);
-		} else {
+		File configLocation = new File("memebox.xml");
+
+		if (!configLocation.exists()) {
+
+			// this is from the build environment during testing
 			configLocation = new File("target/test-classes/memebox.xml");
 		}
 
