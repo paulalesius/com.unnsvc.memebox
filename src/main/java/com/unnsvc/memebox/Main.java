@@ -25,21 +25,34 @@ import com.unnsvc.memebox.ui.MainFrame;
 
 public class Main {
 
-	private static Logger log = LoggerFactory.getLogger(Main.class);
-	public static IMemeboxContext context;
+	private Logger log = LoggerFactory.getLogger(Main.class);
+	public IMemeboxContext context;
 
 	public static void main(String... args) throws Exception {
 
-		log.info("Initializing application");
+		File configLocation = null;
+		
+		if (args != null && args.length > 1) {
+			String pathStr = args[0];
+			configLocation = new File(pathStr);
+		} else {
+			configLocation = new File("target/test-classes/memebox.xml");
+		}
 
-		File prefs = new File("src/test/resources/memebox.xml");
+		Main main = new Main();
+		main.startup(configLocation);
+	}
+
+	public void startup(File configLocation) throws Exception {
+
+		log.info("Starting application with config: " + configLocation);
 
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
 
 				try {
-					context = initialise(prefs);
+					context = configureContext(configLocation);
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
@@ -74,10 +87,10 @@ public class Main {
 					log.error("Epic fail", throwable);
 				} finally {
 
-					synchronized (prefs) {
+					synchronized (configLocation) {
 
 						log.error("Initialized");
-						prefs.notifyAll();
+						configLocation.notifyAll();
 					}
 				}
 			}
@@ -86,13 +99,18 @@ public class Main {
 		/**
 		 * Block main until initialisation is complete
 		 */
-		synchronized (prefs) {
-			
-			prefs.wait();
+		synchronized (configLocation) {
+
+			configLocation.wait();
 		}
 	}
 
-	private static IMemeboxContext initialise(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
+	public IMemeboxContext getContext() {
+
+		return context;
+	}
+
+	private IMemeboxContext configureContext(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
 		IMemeboxConfig prefs = MemeboxConfigurationReader.readPreferences(prefsLocation);
 		StorageLocation location = new StorageLocation(prefs.getDatabase());
