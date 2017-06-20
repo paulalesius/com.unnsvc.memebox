@@ -3,6 +3,8 @@ package com.unnsvc.memebox.importer;
 
 import java.nio.file.Path;
 
+import com.unnsvc.memebox.MemeboxException;
+
 public interface IMemeboxDirectoryWatcherListener {
 
 	/**
@@ -10,12 +12,12 @@ public interface IMemeboxDirectoryWatcherListener {
 	 * 
 	 * @param path
 	 */
-	public void onEntryModify(Path path, ESupportedExt fileType);
+	public void onEntryModify(boolean autoimport, Path path, ESupportedExt fileType) throws MemeboxException;
 
 	/**
 	 * This is called on application startup
 	 * 
 	 * @param path
 	 */
-	public void onInitialise(Path path, ESupportedExt fileType);
+	public void onInitialise(boolean autoimport, Path path, ESupportedExt fileType) throws MemeboxException;
 }

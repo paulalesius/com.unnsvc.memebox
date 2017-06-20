@@ -21,6 +21,5 @@ public class TestMain {
 		MainFrame mainFrame = main.getContext().getComponent(MainFrame.class);
 		mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
 		// mainFrame.dispose();
-
 	}
 }

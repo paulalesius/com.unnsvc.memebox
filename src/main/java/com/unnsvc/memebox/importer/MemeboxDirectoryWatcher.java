@@ -24,7 +24,13 @@ import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
+import com.unnsvc.memebox.config.WatchLocation;
 
+/**
+ * @TODO fix these back and forth Path-File conversions
+ * @author noname
+ *
+ */
 public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectoryWatcher {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -47,7 +53,7 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 
 			runInitialise();
 			runMainLoop();
-		} catch (InterruptedException | IOException ioe) {
+		} catch (MemeboxException | InterruptedException | IOException ioe) {
 
 			throw new RuntimeException(ioe);
 		}
@@ -58,14 +64,13 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 		IMemeboxConfig prefs = context.getComponent(MemeboxConfig.class);
 		try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
 
-			for (File watchLocation : prefs.getWatchLocations()) {
+			for (WatchLocation watchLocation : prefs.getWatchLocations()) {
 
-				if (watchLocation.exists()) {
+				if (watchLocation.getLocation().exists()) {
 
 					log.trace("Watching: " + watchLocation);
-					Path path = watchLocation.toPath();
+					Path path = watchLocation.getLocation().toPath();
 					path.register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE);
-
 				} else {
 
 					log.warn("Watch location not available: " + watchLocation);
@@ -92,16 +97,20 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 								continue;
 							} else if (kind == StandardWatchEventKinds.ENTRY_CREATE || kind == StandardWatchEventKinds.ENTRY_MODIFY) {
 
-								Path path = (Path) watchEvent.context();
+								try {
+									Path path = (Path) watchEvent.context();
 
-								// @TODO don't convert paths back and forth
-								String extSuffix = getFileExtension(path.toFile());
-								if (extSuffix != null) {
+									// @TODO don't convert paths back and forth
+									String extSuffix = getFileExtension(path.toFile());
+									if (extSuffix != null) {
 
-									ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
-									watchListener.onEntryModify(path, ext);
+										ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
+										watchListener.onEntryModify(getAutoimportAttributeForPath(prefs, path), path, ext);
+									}
+								} catch (MemeboxException me) {
+
+									log.error("Error processing file change notification, this is a bug, please report", me);
 								}
-
 							}
 
 							// process event
@@ -126,20 +135,40 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 	}
 
 	/**
-	 * Here we want to search thought the watched folders and evaluate the items
+	 * @TODO I don't like checking like this for each individual file as it
+	 *       becomes expensive for hundreds of thousands of files
 	 */
-	private void runInitialise() {
+	private boolean getAutoimportAttributeForPath(IMemeboxConfig prefs, Path path) {
+
+		String pathFile = path.toFile().getAbsolutePath();
+		for (WatchLocation watchLocation : prefs.getWatchLocations()) {
+
+			String location = watchLocation.getLocation().getAbsolutePath();
+			if (pathFile.startsWith(location)) {
+
+				return watchLocation.getAutoimport();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Here we want to search thought the watched folders and evaluate the items
+	 * 
+	 * @throws MemeboxException
+	 */
+	private void runInitialise() throws MemeboxException {
 
 		IMemeboxConfig prefs = context.getComponent(MemeboxConfig.class);
-		for (File watchLocation : prefs.getWatchLocations()) {
+		for (WatchLocation watchLocation : prefs.getWatchLocations()) {
 
-			if (watchLocation.isDirectory()) {
-				runInitialise(watchLocation);
+			if (watchLocation.getLocation().isDirectory()) {
+				runInitialise(watchLocation.getAutoimport(), watchLocation.getLocation());
 			}
 		}
 	}
 
-	private void runInitialise(File watchLocation) {
+	private void runInitialise(boolean autoimport, File watchLocation) throws MemeboxException {
 
 		for (File contained : watchLocation.listFiles()) {
 			log.trace("Try " + watchLocation);
@@ -152,11 +181,11 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 					log.trace("Watcher found " + contained + " ext: " + extSuffix);
 
 					ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
-					watchListener.onInitialise(contained.toPath(), ext);
+					watchListener.onInitialise(autoimport, contained.toPath(), ext);
 				}
 			} else if (contained.isDirectory()) {
 
-				runInitialise(contained);
+				runInitialise(autoimport, contained);
 			}
 		}
 	}

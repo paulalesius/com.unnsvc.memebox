@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The fiest extension provided to constructor, is the default extension
+ * 
+ * @author noname
+ *
+ */
 public enum ESupportedExt {
 
 	JPG("jpg", "jpeg"), PNG("png"), GIF("gif"), UNRECOGNISED;
@@ -19,6 +25,16 @@ public enum ESupportedExt {
 	public List<String> getExts() {
 
 		return exts;
+	}
+
+	/**
+	 * The default extension for this file type
+	 * 
+	 * @return
+	 */
+	public String getDefaultExt() {
+
+		return exts.get(0);
 	}
 
 	/**

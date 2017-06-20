@@ -109,20 +109,28 @@ public class Main {
 		return context;
 	}
 
+	/**
+	 * Ordering in how we put components in context is important here because
+	 * components initialised later will want to have other components in
+	 * context, another option is SwingUtilities.invokeLater but this is
+	 * probably a bad idea
+	 */
 	private IMemeboxContext configureContext(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
+		MemeboxContext memeboxContext = new MemeboxContext();
+
 		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(prefsLocation);
-		StorageLocation location = new StorageLocation(prefs.getDatabase());
+		memeboxContext.addComponent(prefs);
+
+		StorageLocation location = new StorageLocation(prefs.getDatabaseFile());
+		memeboxContext.addComponent(location);
 
 		int procs = Runtime.getRuntime().availableProcessors();
 		int threads = procs < 4 ? 4 : procs;
 		MemeboxThreadPool executor = new MemeboxThreadPool(threads);
-		MemeboxContext memeboxContext = new MemeboxContext();
-		MemeboxDirectoryWatcher directoryWatcher = new MemeboxDirectoryWatcher(memeboxContext, new MemeboxDirectoryWatcherListener(memeboxContext));
-
 		memeboxContext.addComponent(executor);
-		memeboxContext.addComponent(prefs);
-		memeboxContext.addComponent(location);
+
+		MemeboxDirectoryWatcher directoryWatcher = new MemeboxDirectoryWatcher(memeboxContext, new MemeboxDirectoryWatcherListener(memeboxContext));
 		memeboxContext.addComponent(directoryWatcher);
 
 		return memeboxContext;

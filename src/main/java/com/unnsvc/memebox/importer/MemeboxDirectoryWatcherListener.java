@@ -1,33 +1,90 @@
 
 package com.unnsvc.memebox.importer;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IMemeboxContext;
+import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.MemeboxException;
+import com.unnsvc.memebox.config.IMemeboxConfig;
+import com.unnsvc.memebox.config.MemeboxConfig;
+import com.unnsvc.memebox.model.StorageLocation;
 
+/**
+ * @TODO This class should really handoff to executor service to process them
+ *       all in parallel because we perform a very slow operation to hash/store
+ *       metadata/etc
+ * 
+ * @author noname
+ *
+ */
 public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcherListener {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private IMemeboxContext context;
+	private IMemeboxConfig config;
+	private IStorageLocation storage;
 
 	public MemeboxDirectoryWatcherListener(IMemeboxContext context) {
 
 		this.context = context;
+		this.config = context.getComponent(MemeboxConfig.class);
+		this.storage = context.getComponent(StorageLocation.class);
 	}
 
 	@Override
-	public void onInitialise(Path path, ESupportedExt ext) {
+	public void onInitialise(boolean autoimport, Path path, ESupportedExt ext) throws MemeboxException {
 
-		log.trace("On initialise " + path + " ext: " + ext);
-		
+		String digestString = toDigestString(path.toFile());
+		log.trace("On initialise " + path + " ext: " + ext + " autoimport: " + autoimport + " hash: " + digestString);
+
+		File imageStore = config.getImageStorageLocation();
+		if (!imageStore.exists()) {
+			imageStore.mkdirs();
+		}
+
+		File imageStoreLocation = new File(imageStore, digestString + "." + ext.getDefaultExt());
+
+		if (!imageStoreLocation.exists()) {
+			try {
+				log.info("Importing: " + path + " to " + imageStoreLocation);
+				FileUtils.copyFile(path.toFile(), imageStoreLocation);
+			} catch (IOException ioe) {
+				throw new MemeboxException(ioe);
+			}
+		} else {
+
+			log.warn("Exists already: " + imageStoreLocation);
+			/**
+			 * It exists in already in store so we just remove the original?
+			 */
+		}
 	}
 
 	@Override
-	public void onEntryModify(Path path, ESupportedExt ext) {
+	public void onEntryModify(boolean autoimport, Path path, ESupportedExt ext) throws MemeboxException {
 
-		log.trace("On modify " + path + " ext: " + ext);
+		log.trace("On modify " + path + " ext: " + ext + " autoimport: " + autoimport);
 	}
+
+	private String toDigestString(File file) throws MemeboxException {
+
+		try (InputStream is = new FileInputStream(file)) {
+
+			return DigestUtils.sha1Hex(is);
+		} catch (IOException e) {
+
+			throw new MemeboxException(e);
+		}
+	}
+
 }

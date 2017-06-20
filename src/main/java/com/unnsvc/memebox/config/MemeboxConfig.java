@@ -5,16 +5,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.unnsvc.memebox.MemeboxConstants;
+
 public class MemeboxConfig implements IMemeboxConfig {
 
 	private File location;
 	private File database;
-	private List<File> watchLocations;
+	private List<WatchLocation> watchLocations;
 	private File backupLocation;
 
 	public MemeboxConfig() {
 
-		watchLocations = new ArrayList<File>();
+		watchLocations = new ArrayList<WatchLocation>();
 	}
 
 	public void setLocation(File location) {
@@ -23,19 +25,25 @@ public class MemeboxConfig implements IMemeboxConfig {
 	}
 
 	@Override
-	public File getLocation() {
+	public File getStorageLocation() {
 
 		return location;
 	}
-
+	
 	@Override
-	public void addWatchLocation(File location) {
-
-		this.watchLocations.add(location);
+	public File getImageStorageLocation() {
+		
+		return new File(getStorageLocation(), MemeboxConstants.NAME_DATA_IMAGE_DIRECTORY);
 	}
 
 	@Override
-	public List<File> getWatchLocations() {
+	public void addWatchLocation(WatchLocation watchLocation) {
+
+		this.watchLocations.add(watchLocation);
+	}
+
+	@Override
+	public List<WatchLocation> getWatchLocations() {
 
 		return watchLocations;
 	}
@@ -46,7 +54,7 @@ public class MemeboxConfig implements IMemeboxConfig {
 	}
 
 	@Override
-	public File getDatabase() {
+	public File getDatabaseFile() {
 
 		return database;
 	}

@@ -18,7 +18,7 @@ public abstract class AbstractTest {
 
 		File configLocation = new File("target/test-classes/memebox.xml");
 		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(configLocation);
-		IStorageLocation location = new StorageLocation(prefs.getDatabase());
+		IStorageLocation location = new StorageLocation(prefs.getDatabaseFile());
 		context = new MemeboxContext();
 		context.addComponent(prefs);
 		context.addComponent(location);
