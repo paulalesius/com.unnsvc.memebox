@@ -166,6 +166,8 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 				runInitialise(watchLocation.getAutoimport(), watchLocation.getLocation());
 			}
 		}
+		// 
+		context.flushComponents();
 	}
 
 	private void runInitialise(boolean autoimport, File watchLocation) throws MemeboxException {
@@ -214,6 +216,11 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 
 			return name.substring(atPosition + 1).toLowerCase();
 		}
+	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) {
+
 	}
 
 }

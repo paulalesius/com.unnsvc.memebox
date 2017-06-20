@@ -4,6 +4,7 @@ package com.unnsvc.memebox.ui;
 import javax.swing.JProgressBar;
 
 import com.unnsvc.memebox.IMemeboxComponent;
+import com.unnsvc.memebox.config.IMemeboxConfig;
 
 public class MemeboxProgressBar extends JProgressBar implements IMemeboxComponent {
 
@@ -11,6 +12,11 @@ public class MemeboxProgressBar extends JProgressBar implements IMemeboxComponen
 
 	@Override
 	public void destroyComponent() {
+
+	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) {
 
 	}
 }

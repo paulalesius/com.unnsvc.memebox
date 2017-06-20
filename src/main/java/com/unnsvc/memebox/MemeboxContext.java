@@ -7,6 +7,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.unnsvc.memebox.config.MemeboxConfig;
+
 public class MemeboxContext implements IMemeboxContext {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -50,6 +52,15 @@ public class MemeboxContext implements IMemeboxContext {
 		for (Class<?> type : components.keySet()) {
 
 			log.debug(type.getClass().getName() + ": " + components.get(type).getClass());
+		}
+	}
+
+	@Override
+	public void flushComponents() throws MemeboxException {
+
+		for (Class<?> type : components.keySet()) {
+
+			components.get(type).flushComponent(this.getComponent(MemeboxConfig.class));
 		}
 	}
 }

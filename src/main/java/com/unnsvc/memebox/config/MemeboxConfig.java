@@ -1,16 +1,20 @@
 
 package com.unnsvc.memebox.config;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.unnsvc.memebox.MemeboxConstants;
+import com.unnsvc.memebox.MemeboxException;
 
 public class MemeboxConfig implements IMemeboxConfig {
 
 	private File location;
-	private File database;
+	private File databaseFile;
 	private List<WatchLocation> watchLocations;
 	private File backupLocation;
 
@@ -19,7 +23,7 @@ public class MemeboxConfig implements IMemeboxConfig {
 		watchLocations = new ArrayList<WatchLocation>();
 	}
 
-	public void setLocation(File location) {
+	public void setStorageLocation(File location) {
 
 		this.location = location;
 	}
@@ -29,10 +33,10 @@ public class MemeboxConfig implements IMemeboxConfig {
 
 		return location;
 	}
-	
+
 	@Override
 	public File getImageStorageLocation() {
-		
+
 		return new File(getStorageLocation(), MemeboxConstants.NAME_DATA_IMAGE_DIRECTORY);
 	}
 
@@ -48,15 +52,15 @@ public class MemeboxConfig implements IMemeboxConfig {
 		return watchLocations;
 	}
 
-	public void setDatabase(File database) {
+	public void setDatabaseFile(File databaseFile) {
 
-		this.database = database;
+		this.databaseFile = databaseFile;
 	}
 
 	@Override
 	public File getDatabaseFile() {
 
-		return database;
+		return databaseFile;
 	}
 
 	@Override
@@ -80,4 +84,19 @@ public class MemeboxConfig implements IMemeboxConfig {
 
 		this.backupLocation = backupLocation;
 	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) throws MemeboxException {
+
+		String serialised = serialise();
+		File outFile = new File(config.getStorageLocation(), MemeboxConstants.NAME_MEMEBOX_CONFIG);
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outFile))) {
+
+			bos.write(serialised.getBytes());
+		} catch (IOException e) {
+
+			throw new MemeboxException(e);
+		}
+	}
+
 }

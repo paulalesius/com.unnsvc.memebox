@@ -30,12 +30,12 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 
-		File configLocation = new File("memebox.xml");
+		File configLocation = new File(MemeboxConstants.NAME_MEMEBOX_CONFIG);
 
 		if (!configLocation.exists()) {
 
 			// this is from the build environment during testing
-			configLocation = new File("target/test-classes/memebox.xml");
+			configLocation = new File("target/test-classes/", MemeboxConstants.NAME_MEMEBOX_CONFIG);
 		}
 
 		Main main = new Main();

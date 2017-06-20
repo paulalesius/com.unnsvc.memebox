@@ -1,11 +1,16 @@
 
 package com.unnsvc.memebox.importer;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -14,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
@@ -44,7 +50,8 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 	@Override
 	public void onInitialise(boolean autoimport, Path path, ESupportedExt ext) throws MemeboxException {
 
-		String digestString = toDigestString(path.toFile());
+		File file = path.toFile();
+		String digestString = toDigestString(file);
 		log.trace("On initialise " + path + " ext: " + ext + " autoimport: " + autoimport + " hash: " + digestString);
 
 		File imageStore = config.getImageStorageLocation();
@@ -57,6 +64,18 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 		if (!imageStoreLocation.exists()) {
 			try {
 				log.info("Importing: " + path + " to " + imageStoreLocation);
+
+				BufferedImage image = ImageIO.read(file);
+
+				/**
+				 * @TODO make a data structure that can handle native types
+				 */
+				Map<String, String> imageProps = new HashMap<String, String>();
+				imageProps.put(MemeboxConstants.META_ORIGINAL_NAME, file.getName());
+				imageProps.put(MemeboxConstants.META_ORIGINAL_WIDTH, image.getWidth() + "");
+				imageProps.put(MemeboxConstants.META_ORIGINAL_HEIGHT, image.getHeight() + "");
+				storage.getMetadata().put(digestString, imageProps);
+
 				FileUtils.copyFile(path.toFile(), imageStoreLocation);
 			} catch (IOException ioe) {
 				throw new MemeboxException(ioe);
@@ -66,6 +85,7 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 			log.warn("Exists already: " + imageStoreLocation);
 			/**
 			 * It exists in already in store so we just remove the original?
+			 * This is a dangerous operation so think carefully until production
 			 */
 		}
 	}

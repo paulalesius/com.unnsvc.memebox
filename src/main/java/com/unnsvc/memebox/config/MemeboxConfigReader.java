@@ -58,23 +58,23 @@ public class MemeboxConfigReader {
 
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				File location = new File(locationStr);
-				prefs.setLocation(location);
+				prefs.setStorageLocation(location);
 			} else if (child.getNodeName().equals("database")) {
 
 				String locationStr = child.getAttributes().getNamedItem("file").getNodeValue();
 				File location = new File(locationStr);
-				prefs.setDatabase(location);
+				prefs.setDatabaseFile(location);
 			} else if (child.getNodeName().equals("watch")) {
 
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				String autoimportStr = child.getAttributes().getNamedItem("autoimport").getNodeValue();
-				
+
 				boolean autoimport = Boolean.valueOf(autoimportStr);
 				File location = new File(locationStr);
-				
+
 				prefs.addWatchLocation(new WatchLocation(location, autoimport));
 			} else if (child.getNodeName().equals("backup")) {
-				
+
 				String bacupsStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				File location = new File(bacupsStr);
 				prefs.setBackupLocation(location);

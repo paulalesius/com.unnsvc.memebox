@@ -20,7 +20,7 @@ public class MemeboxConfigSerialiser {
 				.append(NL);
 
 		sb.append("\t<storage location=\"" + config.getStorageLocation() + "\" />").append(NL);
-		sb.append("\t<database location=\"" + config.getDatabaseFile() + "\" />").append(NL);
+		sb.append("\t<database file=\"" + config.getDatabaseFile() + "\" />").append(NL);
 		sb.append("\t<backup location=\"" + config.getBackupLocation() + "\" />").append(NL);
 
 		for (WatchLocation watchLocation : config.getWatchLocations()) {

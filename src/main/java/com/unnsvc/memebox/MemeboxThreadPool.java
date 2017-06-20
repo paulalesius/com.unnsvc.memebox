@@ -5,6 +5,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.unnsvc.memebox.config.IMemeboxConfig;
+
 public class MemeboxThreadPool extends ThreadPoolExecutor implements IMemeboxComponent {
 
 	public MemeboxThreadPool(int nrThreads) {
@@ -14,6 +16,11 @@ public class MemeboxThreadPool extends ThreadPoolExecutor implements IMemeboxCom
 
 	@Override
 	public void destroyComponent() {
+
+	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) {
 
 	}
 }

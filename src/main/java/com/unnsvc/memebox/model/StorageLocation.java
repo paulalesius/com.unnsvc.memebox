@@ -2,8 +2,10 @@
 package com.unnsvc.memebox.model;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IStorageLocation;
 import com.unnsvc.memebox.MemeboxException;
+import com.unnsvc.memebox.config.IMemeboxConfig;
 
 public class StorageLocation implements IStorageLocation {
 
@@ -104,5 +107,18 @@ public class StorageLocation implements IStorageLocation {
 			}
 		}
 		return props;
+	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) throws MemeboxException {
+
+		File databaseFile = config.getDatabaseFile();
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(databaseFile))) {
+
+			serialise().store(bos, null);
+		} catch (IOException ioe) {
+			
+			throw new MemeboxException(ioe);
+		}
 	}
 }

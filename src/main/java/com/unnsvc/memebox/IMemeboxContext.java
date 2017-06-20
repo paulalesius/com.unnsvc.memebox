@@ -9,4 +9,6 @@ public interface IMemeboxContext {
 
 	public void destroy();
 
+	public void flushComponents() throws MemeboxException;
+
 }

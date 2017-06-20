@@ -84,4 +84,9 @@ public class MemeboxBackup implements IMemeboxBackup {
 		zipFile.write(data, 0, data.length);
 		zipFile.closeEntry();
 	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) {
+
+	}
 }

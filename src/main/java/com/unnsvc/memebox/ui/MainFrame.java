@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.unnsvc.memebox.IMemeboxComponent;
 import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.MemeboxException;
+import com.unnsvc.memebox.config.IMemeboxConfig;
 
 public class MainFrame extends JFrame implements IMemeboxComponent {
 
@@ -223,6 +224,11 @@ public class MainFrame extends JFrame implements IMemeboxComponent {
 
 	@Override
 	public void destroyComponent() {
+
+	}
+
+	@Override
+	public void flushComponent(IMemeboxConfig config) {
 
 	}
 }
