@@ -19,9 +19,9 @@ import org.xml.sax.SAXException;
 
 import com.unnsvc.memebox.MemeboxUtils;
 
-public class MemeboxConfigurationReader {
+public class MemeboxConfigReader {
 
-	public MemeboxConfigurationReader() {
+	public MemeboxConfigReader() {
 
 	}
 
@@ -35,7 +35,7 @@ public class MemeboxConfigurationReader {
 
 		// validate
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		StreamSource schemaSource = new StreamSource(MemeboxConfigurationReader.class.getResourceAsStream("/META-INF/schema/memebox.xsd"));
+		StreamSource schemaSource = new StreamSource(MemeboxConfigReader.class.getResourceAsStream("/META-INF/schema/memebox.xsd"));
 		Schema schema = schemaFactory.newSchema(new Source[] { schemaSource });
 		factory.setSchema(schema);
 
@@ -60,7 +60,7 @@ public class MemeboxConfigurationReader {
 				File location = new File(locationStr);
 				prefs.setLocation(location);
 			} else if (child.getNodeName().equals("database")) {
-				
+
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				File location = new File(locationStr);
 				prefs.setDatabase(location);
@@ -69,6 +69,11 @@ public class MemeboxConfigurationReader {
 				String locationStr = child.getAttributes().getNamedItem("location").getNodeValue();
 				File location = new File(locationStr);
 				prefs.addWatchLocation(location);
+			} else if (child.getNodeName().equals("backup")) {
+				
+				String bacupsStr = child.getAttributes().getNamedItem("location").getNodeValue();
+				File location = new File(bacupsStr);
+				prefs.setBackupLocation(location);
 			}
 		});
 	}

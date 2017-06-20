@@ -73,7 +73,7 @@ public class StorageLocation implements IStorageLocation {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public Map<String, Map<String, String>> getMetadata() {
 
@@ -89,5 +89,20 @@ public class StorageLocation implements IStorageLocation {
 	@Override
 	public void destroyComponent() {
 
+	}
+
+	@Override
+	public Properties serialise() {
+
+		Properties props = new Properties();
+		for (String key : metadata.keySet()) {
+
+			Map<String, String> assetProps = metadata.get(key);
+			for (String assetPropsKey : assetProps.keySet()) {
+
+				props.put(key + "." + assetPropsKey, assetProps.get(assetPropsKey));
+			}
+		}
+		return props;
 	}
 }

@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <memebox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:memebox" xsi:schemaLocation="urn:memebox http://schema.unnsvc.com/memebox/memebox.xsd">
-
-	<!-- data/images/<sha1sum>.ext -->
-
 	<storage location="target/test-classes/data" />
 	<database location="target/test-classes/memebox.properties" />
 	<backup location="target/test-classes/backups" />
-
 	<watch location="target/test-classes/import" />
 	<watch location="/data/storage/downloads2" />
-
 </memebox>

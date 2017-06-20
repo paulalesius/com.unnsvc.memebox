@@ -10,6 +10,7 @@ public class MemeboxConfig implements IMemeboxConfig {
 	private File location;
 	private File database;
 	private List<File> watchLocations;
+	private File backupLocation;
 
 	public MemeboxConfig() {
 
@@ -53,5 +54,22 @@ public class MemeboxConfig implements IMemeboxConfig {
 	@Override
 	public void destroyComponent() {
 
+	}
+
+	@Override
+	public String serialise() {
+
+		return new MemeboxConfigSerialiser(this).getSerialised();
+	}
+
+	@Override
+	public File getBackupLocation() {
+
+		return backupLocation;
+	}
+
+	public void setBackupLocation(File backupLocation) {
+
+		this.backupLocation = backupLocation;
 	}
 }

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
-import com.unnsvc.memebox.config.MemeboxConfigurationReader;
+import com.unnsvc.memebox.config.MemeboxConfigReader;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcher;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcherListener;
 import com.unnsvc.memebox.model.StorageLocation;
@@ -111,7 +111,7 @@ public class Main {
 
 	private IMemeboxContext configureContext(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
-		IMemeboxConfig prefs = MemeboxConfigurationReader.readPreferences(prefsLocation);
+		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(prefsLocation);
 		StorageLocation location = new StorageLocation(prefs.getDatabase());
 
 		int procs = Runtime.getRuntime().availableProcessors();

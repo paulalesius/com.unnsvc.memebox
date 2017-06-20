@@ -16,4 +16,7 @@ public interface IMemeboxConfig extends IMemeboxComponent {
 
 	public List<File> getWatchLocations();
 
+	public String serialise();
+
+	public File getBackupLocation();
 }

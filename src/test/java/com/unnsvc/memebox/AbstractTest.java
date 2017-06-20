@@ -6,7 +6,7 @@ import java.io.File;
 import org.junit.Before;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
-import com.unnsvc.memebox.config.MemeboxConfigurationReader;
+import com.unnsvc.memebox.config.MemeboxConfigReader;
 import com.unnsvc.memebox.model.StorageLocation;
 
 public abstract class AbstractTest {
@@ -17,7 +17,7 @@ public abstract class AbstractTest {
 	public void before() throws Exception {
 
 		File configLocation = new File("target/test-classes/memebox.xml");
-		IMemeboxConfig prefs = MemeboxConfigurationReader.readPreferences(configLocation);
+		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(configLocation);
 		IStorageLocation location = new StorageLocation(prefs.getDatabase());
 		context = new MemeboxContext();
 		context.addComponent(prefs);
