@@ -3,7 +3,7 @@
 It starts off with features enumerated below, and will later be expanded with features relevant to our interests
 
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/implemented15x15.gif) storage management
-- ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) storage backup
+- ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/implemented15x15.gif) storage backup
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) track duplicates
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/implemented15x15.gif) watch directories for new images
 - ![Screenshot](https://raw.githubusercontent.com/paulalesius/com.unnsvc.memebox/master/misc/notimplemented15x15.gif) tagging
