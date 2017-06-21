@@ -3,8 +3,10 @@ package com.unnsvc.memebox.ui;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
@@ -13,10 +15,16 @@ import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.unnsvc.memebox.IMemeboxContext;
 import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.MemeboxThreadPool;
+import com.unnsvc.memebox.config.IMemeboxConfig;
+import com.unnsvc.memebox.config.MemeboxConfig;
 import com.unnsvc.memebox.storage.StorageLocation;
 
 /**
@@ -26,6 +34,7 @@ import com.unnsvc.memebox.storage.StorageLocation;
  */
 public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private ImageIcon dummy;
 	private ImageIcon[] listData;
 	private IMemeboxContext context;
@@ -33,21 +42,28 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 	public LibraryScrollablePanel(IMemeboxContext context) throws MemeboxException {
 
 		ExecutorService executor = context.getComponent(MemeboxThreadPool.class);
+		IMemeboxConfig config = context.getComponent(MemeboxConfig.class);
 		IStorageLocation storageLocation = context.getComponent(StorageLocation.class);
-		Map<String, Map<String, String>> metadata = storageLocation.getMetadata();
-		listData = new ImageIcon[metadata.size()];
+		listData = new ImageIcon[storageLocation.getMetadata().size()];
 		this.context = context;
+		
+		Map<String, Map<String, String>> metadata = new HashMap<String, Map<String, String>>();
+		log.debug("Metadata size: " + metadata.size());
 
-		for (int i = 0; i < metadata.size(); i++) {
+		int idx = 0;
+		for (String hash : metadata.keySet()) {
 
 			/**
-			 * For each image, create a dummy thumbnail and a worker thread that
-			 * loads the image in the background
+			 * Configure the default thumb in the library, and have execution
+			 * threads load the thumbs in the background
 			 */
 			ImageIcon icon = createImageIcon("/META-INF/icons/dummy_128x128.jpg", "HERE IS ICON");
-			listData[i] = icon;
+			listData[idx] = icon;
 
-			executor.submit(new LibraryThumbnailWorker(context, this));
+			File thumbLocation = new File(config.getThumbnailsStorageLocation(), hash + "." + MemeboxConstants.FORMAT_THUMBNAILS.toLowerCase());
+			executor.submit(new LibraryThumbnailWorker(context, this, thumbLocation, idx));
+
+			idx++;
 		}
 	}
 

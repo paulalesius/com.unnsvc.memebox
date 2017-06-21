@@ -11,5 +11,4 @@ public interface IStorageLocation extends IMemeboxComponent {
 	public String getProperty(String hash, String key);
 
 	public Properties serialise();
-
 }

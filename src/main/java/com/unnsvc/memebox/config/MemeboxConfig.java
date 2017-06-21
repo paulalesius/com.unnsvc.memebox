@@ -8,20 +8,32 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 
 public class MemeboxConfig implements IMemeboxConfig {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private File location;
 	private File databaseFile;
+	private File configLocation;
 	private List<WatchLocation> watchLocations;
 	private File backupLocation;
 	private IThumbnailsConfig thumbnailsConfig;
 
-	public MemeboxConfig() {
+	public MemeboxConfig(File configLocation) {
 
-		watchLocations = new ArrayList<WatchLocation>();
+		this.configLocation = configLocation;
+		this.watchLocations = new ArrayList<WatchLocation>();
+	}
+
+	@Override
+	public File getConfigLocation() {
+
+		return configLocation;
 	}
 
 	public void setStorageLocation(File location) {
@@ -107,8 +119,8 @@ public class MemeboxConfig implements IMemeboxConfig {
 	public void flushComponent(IMemeboxConfig config) throws MemeboxException {
 
 		String serialised = serialise();
-		File outFile = new File(config.getStorageLocation(), MemeboxConstants.NAME_MEMEBOX_CONFIG);
-		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outFile))) {
+		log.debug("Writing to: " + config.getConfigLocation());
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(config.getConfigLocation()))) {
 
 			bos.write(serialised.getBytes());
 		} catch (IOException e) {

@@ -7,6 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -30,19 +32,30 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 
-		File configLocation = new File(MemeboxConstants.NAME_MEMEBOX_CONFIG);
-
+		Properties distributionProps = loadDistributionProperties();
+		File configLocation = new File(distributionProps.getProperty(MemeboxConstants.DISTRIBUTION_MEMEBOXCONFIG));
 		if (!configLocation.exists()) {
-
-			// this is from the build environment during testing
-			configLocation = new File("target/test-classes/", MemeboxConstants.NAME_MEMEBOX_CONFIG);
+			throw new MemeboxException("memebox.xml not found: " + configLocation);
 		}
 
 		Main main = new Main();
-		main.startup(configLocation);
+		main.startup(distributionProps, configLocation);
 	}
 
-	public void startup(File configLocation) throws Exception {
+	public static Properties loadDistributionProperties() throws MemeboxException {
+
+		Properties distributionProps = new Properties();
+		try (InputStream is = Main.class.getResourceAsStream(MemeboxConstants.CLASSPATH_DISTRIBUTION_PROPERTIES)) {
+
+			distributionProps.load(is);
+		} catch (IOException ioe) {
+
+			throw new MemeboxException(ioe);
+		}
+		return distributionProps;
+	}
+
+	public void startup(Properties distributionProps, File configLocation) throws Exception {
 
 		log.info("Starting application with config: " + configLocation);
 
@@ -51,7 +64,7 @@ public class Main {
 			public void run() {
 
 				try {
-					context = configureContext(configLocation);
+					context = configureContext(distributionProps, configLocation);
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
@@ -114,12 +127,14 @@ public class Main {
 	 * components initialised later will want to have other components in
 	 * context, another option is SwingUtilities.invokeLater but this is
 	 * probably a bad idea
+	 * @param distributionProps 
 	 */
-	private IMemeboxContext configureContext(File prefsLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
+	private IMemeboxContext configureContext(Properties distributionProps, File configLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
-		MemeboxContext memeboxContext = new MemeboxContext();
+		MemeboxContext memeboxContext = new MemeboxContext(distributionProps);
 
-		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(prefsLocation);
+		MemeboxConfigReader configReader = new MemeboxConfigReader(configLocation);
+		IMemeboxConfig prefs = configReader.readConfiguration();
 		memeboxContext.addComponent(prefs);
 
 		StorageLocation location = new StorageLocation(prefs.getDatabaseFile());

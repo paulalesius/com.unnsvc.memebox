@@ -31,7 +31,7 @@ public class StorageLocation implements IStorageLocation {
 
 	public StorageLocation(File storageLocation) throws MemeboxException {
 
-		log.info("Loading database from: " + storageLocation);
+		log.info("Reading from: " + storageLocation);
 		this.metadata = new HashMap<String, Map<String, String>>();
 		loadProperties(storageLocation);
 	}
@@ -113,11 +113,12 @@ public class StorageLocation implements IStorageLocation {
 	public void flushComponent(IMemeboxConfig config) throws MemeboxException {
 
 		File databaseFile = config.getDatabaseFile();
+		log.info("Writing to " + databaseFile);
 		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(databaseFile))) {
 
 			serialise().store(bos, null);
 		} catch (IOException ioe) {
-			
+
 			throw new MemeboxException(ioe);
 		}
 	}

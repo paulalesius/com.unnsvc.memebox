@@ -23,5 +23,12 @@ public class MemeboxConstants {
 	 * 
 	 */
 	public static final String FORMAT_THUMBNAILS = "PNG";
+	
+	
+	/**
+	 * Distribution properties
+	 */
+	public static final String CLASSPATH_DISTRIBUTION_PROPERTIES = "/META-INF/distribution.properties";
+	public static final String DISTRIBUTION_MEMEBOXCONFIG = "memeboxConfig";
 
 }

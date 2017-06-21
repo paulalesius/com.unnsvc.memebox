@@ -1,7 +1,6 @@
 
 package com.unnsvc.memebox;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,14 +10,13 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
-import com.unnsvc.memebox.config.MemeboxConfigReader;
 
 public class TestConfig extends AbstractBaseTest {
 
 	@Test
 	public void testParse() throws ParserConfigurationException, SAXException, IOException {
 
-		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(new File("src/test/resources/memebox.xml"));
+		IMemeboxConfig prefs = getConfigIo().readConfiguration();
 	}
 
 	@Test
@@ -26,7 +24,7 @@ public class TestConfig extends AbstractBaseTest {
 
 		String actual = readFromClasspath("/memebox.xml");
 
-		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(new File("src/test/resources/memebox.xml"));
+		IMemeboxConfig prefs = getConfigIo().readConfiguration();
 		String serialised = prefs.serialise();
 		Assert.assertEquals(actual, serialised);
 	}

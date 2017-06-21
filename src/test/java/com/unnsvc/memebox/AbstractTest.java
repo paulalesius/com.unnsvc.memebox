@@ -1,25 +1,21 @@
 
 package com.unnsvc.memebox;
 
-import java.io.File;
-
 import org.junit.Before;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
-import com.unnsvc.memebox.config.MemeboxConfigReader;
 import com.unnsvc.memebox.storage.StorageLocation;
 
-public abstract class AbstractTest {
+public abstract class AbstractTest extends AbstractBaseTest {
 
 	private IMemeboxContext context;
 
 	@Before
-	public void before() throws Exception {
+	public void beforeAbstractTest() throws Exception {
 
-		File configLocation = new File("target/test-classes/memebox.xml");
-		IMemeboxConfig prefs = MemeboxConfigReader.readPreferences(configLocation);
+		IMemeboxConfig prefs = getConfigIo().readConfiguration();
 		IStorageLocation location = new StorageLocation(prefs.getDatabaseFile());
-		context = new MemeboxContext();
+		context = new MemeboxContext(getDistProperties());
 		context.addComponent(prefs);
 		context.addComponent(location);
 	}

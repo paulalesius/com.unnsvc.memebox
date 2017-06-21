@@ -13,6 +13,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -21,13 +23,18 @@ import com.unnsvc.memebox.MemeboxUtils;
 
 public class MemeboxConfigReader {
 
-	public MemeboxConfigReader() {
+	private static Logger log = LoggerFactory.getLogger(MemeboxConfigReader.class);
+	private File configLocation;
 
+	public MemeboxConfigReader(File configLocation) {
+
+		this.configLocation = configLocation;
 	}
 
-	public static MemeboxConfig readPreferences(File location) throws ParserConfigurationException, SAXException, IOException {
+	public MemeboxConfig readConfiguration() throws ParserConfigurationException, SAXException, IOException {
 
-		MemeboxConfig prefs = new MemeboxConfig();
+		log.debug("Reading from " + configLocation);
+		MemeboxConfig prefs = new MemeboxConfig(configLocation);
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
@@ -40,7 +47,7 @@ public class MemeboxConfigReader {
 		factory.setSchema(schema);
 
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document document = builder.parse(location);
+		Document document = builder.parse(configLocation);
 
 		MemeboxUtils.listChildren(document, memeboxNode -> {
 

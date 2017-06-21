@@ -1,6 +1,7 @@
 
 package com.unnsvc.memebox.ui;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 
 import com.unnsvc.memebox.IMemeboxContext;
@@ -14,14 +15,18 @@ import com.unnsvc.memebox.IMemeboxContext;
  *
  */
 public class LibraryThumbnailWorker implements Callable<Void> {
-	
+
 	private IMemeboxContext context;
 	private LibraryScrollablePanel libraryPane;
+	private File thumbLocation;
+	private int idx;
 
-	public LibraryThumbnailWorker(IMemeboxContext context, LibraryScrollablePanel libraryPane) {
+	public LibraryThumbnailWorker(IMemeboxContext context, LibraryScrollablePanel libraryPane, File thumbLocation, int idx) {
 
 		this.context = context;
-		this.libraryPane  = libraryPane;
+		this.libraryPane = libraryPane;
+		this.thumbLocation = thumbLocation;
+		this.idx = idx;
 	}
 
 	@Override
