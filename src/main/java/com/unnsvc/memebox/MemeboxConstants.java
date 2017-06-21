@@ -12,23 +12,15 @@ public class MemeboxConstants {
 	public static final String META_ORIGINAL_NAME = "original_name";
 	public static final String META_ORIGINAL_WIDTH = "original_width";
 	public static final String META_ORIGINAL_HEIGHT = "original_height";
-	
+
 	public static final String META_THUMBNAIL_WIDTH = "thumbnail_width";
 	public static final String META_THUMBNAIL_HEIGHT = "thumbnail_height";
 
 	public static final String NAME_MEMEBOX_CONFIG = "memebox.xml";
-	
-	
+
 	/**
 	 * 
 	 */
 	public static final String FORMAT_THUMBNAILS = "PNG";
-	
-	
-	/**
-	 * Distribution properties
-	 */
-	public static final String CLASSPATH_DISTRIBUTION_PROPERTIES = "/META-INF/distribution.properties";
-	public static final String DISTRIBUTION_MEMEBOXCONFIG = "memeboxConfig";
 
 }

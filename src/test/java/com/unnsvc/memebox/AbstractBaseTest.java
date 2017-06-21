@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.junit.Before;
 
@@ -30,14 +29,14 @@ public abstract class AbstractBaseTest {
 	}
 
 	private MemeboxConfigReader configIo;
-	private Properties distProperties;
+	private IDistributionConfiguration distConfig;
 	private File configLoction;
 
 	@Before
 	public void beforeAbstractBaseTest() throws MemeboxException {
 
-		distProperties = Main.loadDistributionProperties();
-		configLoction = new File(distProperties.getProperty(MemeboxConstants.DISTRIBUTION_MEMEBOXCONFIG));
+		distConfig = new DistributionConfiguration();
+		configLoction = new File(distConfig.getProperty(DistributionConfiguration.PROP_DEFAULT_CONFIG));
 		configIo = new MemeboxConfigReader(configLoction);
 	}
 
@@ -46,9 +45,9 @@ public abstract class AbstractBaseTest {
 		return configIo;
 	}
 
-	public Properties getDistProperties() {
+	public IDistributionConfiguration getDistributionConfiguration() {
 
-		return distProperties;
+		return distConfig;
 	}
 
 	public File getConfigLoction() {

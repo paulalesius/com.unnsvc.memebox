@@ -7,8 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -32,30 +30,20 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 
-		Properties distributionProps = loadDistributionProperties();
-		File configLocation = new File(distributionProps.getProperty(MemeboxConstants.DISTRIBUTION_MEMEBOXCONFIG));
+		IDistributionConfiguration distConfig = new DistributionConfiguration();
+		File configLocation = new File(distConfig.getProperty(DistributionConfiguration.PROP_DEFAULT_CONFIG));
+
 		if (!configLocation.exists()) {
 			throw new MemeboxException("memebox.xml not found: " + configLocation);
 		}
 
 		Main main = new Main();
-		main.startup(distributionProps, configLocation);
+		main.startup(distConfig, configLocation);
 	}
 
-	public static Properties loadDistributionProperties() throws MemeboxException {
+	public void startup(IDistributionConfiguration distConfig, File configLocation) throws Exception {
 
-		Properties distributionProps = new Properties();
-		try (InputStream is = Main.class.getResourceAsStream(MemeboxConstants.CLASSPATH_DISTRIBUTION_PROPERTIES)) {
-
-			distributionProps.load(is);
-		} catch (IOException ioe) {
-
-			throw new MemeboxException(ioe);
-		}
-		return distributionProps;
-	}
-
-	public void startup(Properties distributionProps, File configLocation) throws Exception {
+		log.info("Starting MemeBox - " + distConfig.getProperty(DistributionConfiguration.PROP_PROFILE));
 
 		SwingUtilities.invokeAndWait(new Runnable() {
 
@@ -64,7 +52,7 @@ public class Main {
 				try {
 					log.info("Starting application with config: " + configLocation);
 
-					context = configureContext(distributionProps, configLocation);
+					context = configureContext(distConfig, configLocation);
 					MemeboxUtils.configureLookAndFeel();
 
 					MainFrame frame = new MainFrame(context);
@@ -114,10 +102,10 @@ public class Main {
 	 * 
 	 * @param distributionProps
 	 */
-	private IMemeboxContext configureContext(Properties distributionProps, File configLocation)
+	private IMemeboxContext configureContext(IDistributionConfiguration distConfig, File configLocation)
 			throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
-		MemeboxContext memeboxContext = new MemeboxContext(distributionProps);
+		MemeboxContext memeboxContext = new MemeboxContext(distConfig);
 
 		MemeboxConfigReader configReader = new MemeboxConfigReader(configLocation);
 		IMemeboxConfig prefs = configReader.readConfiguration();

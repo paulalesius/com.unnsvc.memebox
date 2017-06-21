@@ -3,7 +3,6 @@ package com.unnsvc.memebox;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +12,19 @@ import com.unnsvc.memebox.config.MemeboxConfig;
 public class MemeboxContext implements IMemeboxContext {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private Properties distributionProps;
+	private IDistributionConfiguration distConfig;
 	private Map<Class<?>, IMemeboxComponent> components;
 
-	public MemeboxContext(Properties distributionProps) {
+	public MemeboxContext(IDistributionConfiguration distConfig) {
 
-		this.distributionProps = distributionProps;
+		this.distConfig = distConfig;
 		this.components = new HashMap<Class<?>, IMemeboxComponent>();
 	}
 
 	@Override
-	public Properties getDistributionProps() {
+	public IDistributionConfiguration getDistributionConfiguration() {
 
-		return distributionProps;
+		return distConfig;
 	}
 
 	@Override

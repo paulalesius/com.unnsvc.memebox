@@ -11,7 +11,7 @@ public class TestMain extends AbstractBaseTest {
 	public void testMain() throws Exception {
 
 		Main main = new Main();
-		main.startup(getDistProperties(), getConfigLoction());
+		main.startup(getDistributionConfiguration(), getConfigLoction());
 
 		MainFrame mainFrame = main.getContext().getComponent(MainFrame.class);
 		// mainFrame.dispatchEvent(new WindowEvent(mainFrame,

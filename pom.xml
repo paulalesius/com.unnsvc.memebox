@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.unnsvc.labs.memebox</groupId>
-	<artifactId>com.unnsvc.labs.memebox</artifactId>
+	<groupId>com.unnsvc.memebox</groupId>
+	<artifactId>com.unnsvc.memebox</artifactId>
 	<version>0.0.4-SNAPSHOT</version>
 
 	<properties>
@@ -15,7 +15,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<distribution.memeboxConfig>memebox.xml</distribution.memeboxConfig>
+				<distribution.memeboxDefaultConfig>memebox.xml</distribution.memeboxDefaultConfig>
+				<distribution.memeboxProfile>release</distribution.memeboxProfile>
 			</properties>
 		</profile>
 		<profile>
@@ -26,8 +27,22 @@
 				</property>
 			</activation>
 			<properties>
-				<distribution.memeboxConfig>target/test-classes/memebox.xml</distribution.memeboxConfig>
+				<distribution.memeboxDefaultConfig>target/test-classes/memebox.xml</distribution.memeboxDefaultConfig>
+				<distribution.memeboxProfile>test</distribution.memeboxProfile>
 			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+						<configuration>
+							<mainClass>${project.artifactId}.Main</mainClass>
+							<classpathScope>test</classpathScope>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
@@ -65,6 +80,14 @@
 							</goals>
 						</execution>
 					</executions>
+					<configuration>
+						<archive>
+							<index>true</index>
+							<manifest>
+								<addClasspath>true</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

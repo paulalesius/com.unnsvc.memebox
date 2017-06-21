@@ -15,7 +15,7 @@ public abstract class AbstractTest extends AbstractBaseTest {
 
 		IMemeboxConfig prefs = getConfigIo().readConfiguration();
 		IMetadataStore location = new MetadataStore(prefs.getDatabaseFile());
-		context = new MemeboxContext(getDistProperties());
+		context = new MemeboxContext(getDistributionConfiguration());
 		context.addComponent(prefs);
 		context.addComponent(location);
 	}

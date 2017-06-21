@@ -1,8 +1,6 @@
 
 package com.unnsvc.memebox;
 
-import java.util.Properties;
-
 public interface IMemeboxContext {
 
 	public void addComponent(IMemeboxComponent component);
@@ -13,6 +11,6 @@ public interface IMemeboxContext {
 
 	public void flushComponents() throws MemeboxException;
 
-	public Properties getDistributionProps();
+	public IDistributionConfiguration getDistributionConfiguration();
 
 }
