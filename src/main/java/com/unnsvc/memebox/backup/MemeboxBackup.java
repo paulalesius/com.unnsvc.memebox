@@ -14,11 +14,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.unnsvc.memebox.IMemeboxContext;
-import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.IMetadataStore;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
-import com.unnsvc.memebox.storage.StorageLocation;
+import com.unnsvc.memebox.metadata.MetadataStore;
 
 public class MemeboxBackup implements IMemeboxBackup {
 
@@ -40,7 +40,7 @@ public class MemeboxBackup implements IMemeboxBackup {
 		try {
 
 			IMemeboxConfig config = context.getComponent(MemeboxConfig.class);
-			IStorageLocation storageLocation = context.getComponent(StorageLocation.class);
+			IMetadataStore storageLocation = context.getComponent(MetadataStore.class);
 
 			if (!config.getBackupLocation().exists()) {
 

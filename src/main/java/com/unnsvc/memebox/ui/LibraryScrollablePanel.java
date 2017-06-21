@@ -19,13 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IMemeboxContext;
-import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.IMetadataStore;
 import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.MemeboxThreadPool;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
-import com.unnsvc.memebox.storage.StorageLocation;
+import com.unnsvc.memebox.metadata.MetadataStore;
 
 /**
  * @TODO implement, this is a dummy implementation for PoC
@@ -43,8 +43,8 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 
 		ExecutorService executor = context.getComponent(MemeboxThreadPool.class);
 		IMemeboxConfig config = context.getComponent(MemeboxConfig.class);
-		IStorageLocation storageLocation = context.getComponent(StorageLocation.class);
-		listData = new ImageIcon[storageLocation.getMetadata().size()];
+		IMetadataStore storageLocation = context.getComponent(MetadataStore.class);
+		listData = new ImageIcon[storageLocation.getHashes().size()];
 		this.context = context;
 		
 		Map<String, Map<String, String>> metadata = new HashMap<String, Map<String, String>>();
@@ -92,7 +92,7 @@ public class LibraryScrollablePanel implements ListModel<ImageIcon> {
 	@Override
 	public int getSize() {
 
-		return context.getComponent(StorageLocation.class).getMetadata().size();
+		return context.getComponent(MetadataStore.class).getHashes().size();
 	}
 
 	@Override

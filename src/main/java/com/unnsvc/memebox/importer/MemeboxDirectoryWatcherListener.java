@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -20,13 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.unnsvc.memebox.IMemeboxContext;
-import com.unnsvc.memebox.IStorageLocation;
+import com.unnsvc.memebox.IMetadataStore;
 import com.unnsvc.memebox.MemeboxConstants;
 import com.unnsvc.memebox.MemeboxException;
 import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.IThumbnailsConfig;
 import com.unnsvc.memebox.config.MemeboxConfig;
-import com.unnsvc.memebox.storage.StorageLocation;
+import com.unnsvc.memebox.metadata.MetadataStore;
 
 /**
  * @TODO This class should really handoff to executor service to process them
@@ -41,13 +39,13 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private IMemeboxContext context;
 	private IMemeboxConfig config;
-	private IStorageLocation storage;
+	private IMetadataStore storage;
 
 	public MemeboxDirectoryWatcherListener(IMemeboxContext context) {
 
 		this.context = context;
 		this.config = context.getComponent(MemeboxConfig.class);
-		this.storage = context.getComponent(StorageLocation.class);
+		this.storage = context.getComponent(MetadataStore.class);
 	}
 
 	@Override
@@ -76,20 +74,18 @@ public class MemeboxDirectoryWatcherListener implements IMemeboxDirectoryWatcher
 				BufferedImage image = ImageIO.read(file);
 
 				/**
-				 * @TODO make a data structure that can handle native types
+				 * @TODO make a data structure that can handle native types?
 				 */
-				Map<String, String> imageProps = new HashMap<String, String>();
-				imageProps.put(MemeboxConstants.META_ORIGINAL_NAME, file.getName());
-				imageProps.put(MemeboxConstants.META_ORIGINAL_WIDTH, image.getWidth() + "");
-				imageProps.put(MemeboxConstants.META_ORIGINAL_HEIGHT, image.getHeight() + "");
-				storage.getMetadata().put(digestString, imageProps);
+				storage.setProperty(digestString, MemeboxConstants.META_ORIGINAL_NAME, file.getName());
+				storage.setProperty(digestString, MemeboxConstants.META_ORIGINAL_WIDTH, image.getWidth() + "");
+				storage.setProperty(digestString, MemeboxConstants.META_ORIGINAL_HEIGHT, image.getHeight() + "");
 
 				FileUtils.copyFile(path.toFile(), imageStoreLocation);
 				IThumbnailsConfig thumbConfig = config.getThumbnailsConfig();
 
 				BufferedImage thumbnail = getScaledImage(image, thumbConfig.getWidth(), thumbConfig.getHeight());
-				imageProps.put(MemeboxConstants.META_THUMBNAIL_WIDTH, thumbConfig.getWidth() + "");
-				imageProps.put(MemeboxConstants.META_THUMBNAIL_HEIGHT, thumbConfig.getHeight() + "");
+				storage.setProperty(digestString, MemeboxConstants.META_THUMBNAIL_WIDTH, thumbConfig.getWidth() + "");
+				storage.setProperty(digestString, MemeboxConstants.META_THUMBNAIL_HEIGHT, thumbConfig.getHeight() + "");
 				ImageIO.write(thumbnail, MemeboxConstants.FORMAT_THUMBNAILS, thumbStoreLocation);
 
 			} catch (IOException ioe) {

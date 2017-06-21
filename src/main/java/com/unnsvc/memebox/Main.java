@@ -22,7 +22,7 @@ import com.unnsvc.memebox.config.IMemeboxConfig;
 import com.unnsvc.memebox.config.MemeboxConfigReader;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcher;
 import com.unnsvc.memebox.importer.MemeboxDirectoryWatcherListener;
-import com.unnsvc.memebox.storage.StorageLocation;
+import com.unnsvc.memebox.metadata.MetadataStore;
 import com.unnsvc.memebox.ui.MainFrame;
 
 public class Main {
@@ -38,20 +38,8 @@ public class Main {
 			throw new MemeboxException("memebox.xml not found: " + configLocation);
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-
-			public void run() {
-
-				try {
-
-					Main main = new Main();
-					main.startup(distributionProps, configLocation);
-				} catch (Throwable throwable) {
-
-					new Exception("Epic fail", throwable);
-				}
-			}
-		});
+		Main main = new Main();
+		main.startup(distributionProps, configLocation);
 	}
 
 	public static Properties loadDistributionProperties() throws MemeboxException {
@@ -69,37 +57,48 @@ public class Main {
 
 	public void startup(Properties distributionProps, File configLocation) throws Exception {
 
-		log.info("Starting application with config: " + configLocation);
+		SwingUtilities.invokeAndWait(new Runnable() {
 
-		context = configureContext(distributionProps, configLocation);
-		MemeboxUtils.configureLookAndFeel();
+			public void run() {
 
-		MainFrame frame = new MainFrame(context);
-		context.addComponent(frame);
-		frame.setTitle("MemeBox is a memebox");
+				try {
+					log.info("Starting application with config: " + configLocation);
 
-		// remove this later
-		frame.setPreferredSize(new Dimension(1024, 768));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
+					context = configureContext(distributionProps, configLocation);
+					MemeboxUtils.configureLookAndFeel();
 
-		frame.createUi();
-		frame.pack();
-		frame.setLocationRelativeTo(null);
+					MainFrame frame = new MainFrame(context);
+					context.addComponent(frame);
+					frame.setTitle("MemeBox is a memebox");
 
-		frame.addWindowListener(new WindowAdapter() {
+					// remove this later
+					frame.setPreferredSize(new Dimension(1024, 768));
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.setLayout(new BorderLayout());
 
-			@Override
-			public void windowClosing(WindowEvent e) {
+					frame.createUi();
+					frame.pack();
+					frame.setLocationRelativeTo(null);
 
-				log.debug("Destroying main frame");
-				context.destroy();
+					frame.addWindowListener(new WindowAdapter() {
+
+						@Override
+						public void windowClosing(WindowEvent e) {
+
+							log.debug("Destroying main frame");
+							context.destroy();
+						}
+					});
+
+					frame.setVisible(true);
+
+					((MemeboxContext) context).debugContext();
+				} catch (Throwable throwable) {
+
+					new Exception("Epic fail", throwable);
+				}
 			}
 		});
-
-		frame.setVisible(true);
-
-		((MemeboxContext) context).debugContext();
 	}
 
 	public IMemeboxContext getContext() {
@@ -124,7 +123,7 @@ public class Main {
 		IMemeboxConfig prefs = configReader.readConfiguration();
 		memeboxContext.addComponent(prefs);
 
-		StorageLocation location = new StorageLocation(prefs.getDatabaseFile());
+		MetadataStore location = new MetadataStore(prefs.getDatabaseFile());
 		memeboxContext.addComponent(location);
 
 		int procs = Runtime.getRuntime().availableProcessors();

@@ -4,7 +4,7 @@ package com.unnsvc.memebox;
 import org.junit.Before;
 
 import com.unnsvc.memebox.config.IMemeboxConfig;
-import com.unnsvc.memebox.storage.StorageLocation;
+import com.unnsvc.memebox.metadata.MetadataStore;
 
 public abstract class AbstractTest extends AbstractBaseTest {
 
@@ -14,7 +14,7 @@ public abstract class AbstractTest extends AbstractBaseTest {
 	public void beforeAbstractTest() throws Exception {
 
 		IMemeboxConfig prefs = getConfigIo().readConfiguration();
-		IStorageLocation location = new StorageLocation(prefs.getDatabaseFile());
+		IMetadataStore location = new MetadataStore(prefs.getDatabaseFile());
 		context = new MemeboxContext(getDistProperties());
 		context.addComponent(prefs);
 		context.addComponent(location);
