@@ -1,6 +1,8 @@
 
 package com.unnsvc.memebox;
 
+import javax.swing.UIManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -48,17 +50,20 @@ public class MemeboxUtils {
 
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 
+			log.debug("Available LaF: " + info.getClassName());
+
 			if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
 
-				javax.swing.UIManager.setLookAndFeel(info.getClassName());
+				UIManager.setLookAndFeel(info.getClassName());
+				log.debug("Selecting LaF: " + info.getClassName());
 				break;
 			} else if ("com.sun.java.swing.plaf.windows.WindowsLookAndFeel".equals(info.getClassName())) {
 
-				javax.swing.UIManager.setLookAndFeel(info.getClassName());
+				UIManager.setLookAndFeel(info.getClassName());
+				log.debug("Selecting LaF: " + info.getClassName());
 				break;
 			}
 
-			log.debug("Available look and feel: " + info.getClassName());
 		}
 
 		// try {

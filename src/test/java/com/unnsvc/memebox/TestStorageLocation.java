@@ -9,10 +9,17 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.unnsvc.memebox.storage.StorageLocation;
 
+/**
+ * @TODO make storage location tested
+ * @author noname
+ *
+ */
+@Ignore
 public class TestStorageLocation extends AbstractBaseTest {
 
 	@Test

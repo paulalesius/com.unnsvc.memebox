@@ -166,21 +166,19 @@ public class MemeboxDirectoryWatcher extends Thread implements IMemeboxDirectory
 				runInitialise(watchLocation.getAutoimport(), watchLocation.getLocation());
 			}
 		}
-		// 
+		//
 		context.flushComponents();
 	}
 
 	private void runInitialise(boolean autoimport, File watchLocation) throws MemeboxException {
 
 		for (File contained : watchLocation.listFiles()) {
-			log.trace("Try " + watchLocation);
+			log.trace("Check storage location " + watchLocation);
 
 			if (contained.isFile()) {
 
 				String extSuffix = getFileExtension(contained);
 				if (extSuffix != null) {
-
-					log.trace("Watcher found " + contained + " ext: " + extSuffix);
 
 					ESupportedExt ext = ESupportedExt.fromExtension(extSuffix);
 					watchListener.onInitialise(autoimport, contained.toPath(), ext);

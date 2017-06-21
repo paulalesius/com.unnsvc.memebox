@@ -40,12 +40,14 @@ public class StorageLocation implements IStorageLocation {
 
 		Properties properties = new Properties();
 
-		try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(storageLocation))) {
+		if (storageLocation.exists()) {
+			try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(storageLocation))) {
 
-			properties.load(bis);
-		} catch (IOException ioe) {
+				properties.load(bis);
+			} catch (IOException ioe) {
 
-			throw new MemeboxException(ioe);
+				throw new MemeboxException(ioe);
+			}
 		}
 
 		for (Object keyObj : properties.keySet()) {

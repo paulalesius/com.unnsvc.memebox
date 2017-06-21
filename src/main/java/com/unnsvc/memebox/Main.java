@@ -38,8 +38,20 @@ public class Main {
 			throw new MemeboxException("memebox.xml not found: " + configLocation);
 		}
 
-		Main main = new Main();
-		main.startup(distributionProps, configLocation);
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+
+				try {
+
+					Main main = new Main();
+					main.startup(distributionProps, configLocation);
+				} catch (Throwable throwable) {
+
+					new Exception("Epic fail", throwable);
+				}
+			}
+		});
 	}
 
 	public static Properties loadDistributionProperties() throws MemeboxException {
@@ -59,62 +71,35 @@ public class Main {
 
 		log.info("Starting application with config: " + configLocation);
 
-		SwingUtilities.invokeLater(new Runnable() {
+		context = configureContext(distributionProps, configLocation);
+		MemeboxUtils.configureLookAndFeel();
 
-			public void run() {
+		MainFrame frame = new MainFrame(context);
+		context.addComponent(frame);
+		frame.setTitle("MemeBox is a memebox");
 
-				try {
-					context = configureContext(distributionProps, configLocation);
-					MemeboxUtils.configureLookAndFeel();
+		// remove this later
+		frame.setPreferredSize(new Dimension(1024, 768));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
 
-					MainFrame frame = new MainFrame(context);
-					context.addComponent(frame);
-					frame.setTitle("MemeBox is a memebox");
+		frame.createUi();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 
-					// remove this later
-					frame.setPreferredSize(new Dimension(1024, 768));
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setLayout(new BorderLayout());
+		frame.addWindowListener(new WindowAdapter() {
 
-					frame.createUi();
-					frame.pack();
-					frame.setLocationRelativeTo(null);
+			@Override
+			public void windowClosing(WindowEvent e) {
 
-					frame.addWindowListener(new WindowAdapter() {
-
-						@Override
-						public void windowClosing(WindowEvent e) {
-
-							log.debug("Destroying main frame");
-							context.destroy();
-						}
-					});
-
-					frame.setVisible(true);
-
-					((MemeboxContext) context).debugContext();
-
-				} catch (Throwable throwable) {
-
-					log.error("Epic fail", throwable);
-				} finally {
-
-					synchronized (configLocation) {
-
-						log.error("Initialized");
-						configLocation.notifyAll();
-					}
-				}
+				log.debug("Destroying main frame");
+				context.destroy();
 			}
 		});
 
-		/**
-		 * Block main until initialisation is complete
-		 */
-		synchronized (configLocation) {
+		frame.setVisible(true);
 
-			configLocation.wait();
-		}
+		((MemeboxContext) context).debugContext();
 	}
 
 	public IMemeboxContext getContext() {
@@ -127,9 +112,11 @@ public class Main {
 	 * components initialised later will want to have other components in
 	 * context, another option is SwingUtilities.invokeLater but this is
 	 * probably a bad idea
-	 * @param distributionProps 
+	 * 
+	 * @param distributionProps
 	 */
-	private IMemeboxContext configureContext(Properties distributionProps, File configLocation) throws ParserConfigurationException, SAXException, IOException, MemeboxException {
+	private IMemeboxContext configureContext(Properties distributionProps, File configLocation)
+			throws ParserConfigurationException, SAXException, IOException, MemeboxException {
 
 		MemeboxContext memeboxContext = new MemeboxContext(distributionProps);
 
